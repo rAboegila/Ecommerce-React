@@ -1,0 +1,19 @@
+/* Hero Carousel */
+#template-mo-jassa-hero-carousel {
+  background: #efefef !important;
+}
+@media (min-width: 576px) {
+  .tempaltemo-carousel .h1 {
+    font-size: 1em !important;
+  }
+}
+
+/* Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) {
+  #templatemo_main_nav .navbar-nav {
+    max-width: 550px;
+  }
+  #template-mo-jassa-hero-carousel .carousel-item {
+    min-height: 30rem !important;
+  }
+}
