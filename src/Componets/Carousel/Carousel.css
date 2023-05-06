@@ -2,6 +2,9 @@
 #template-mo-jassa-hero-carousel {
   background: #efefef !important;
 }
+.caption {
+  background-color: rgba(239, 239, 239, 0.4);
+}
 @media (min-width: 576px) {
   .tempaltemo-carousel .h1 {
     font-size: 1em !important;
