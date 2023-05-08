@@ -1,14 +1,12 @@
-import React from 'react';
-
-import './Product.css';
-
-//Bootstrap
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.min.js';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
+import Spinner from 'react-bootstrap/Spinner';
+import './Product-Card.css';
 
 
-export default function Product() {
+export default function ProductCard() {
  
+
 
   return (
 

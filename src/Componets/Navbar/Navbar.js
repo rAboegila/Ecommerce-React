@@ -1,35 +1,13 @@
 import React from 'react';
-
+import {NavLink } from "react-router-dom"
 import './Navbar.css';
 
-//Bootstrap
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.min.js';
+
 
 export default function Navbar() {
  
 
     return ( 
-        
-        // <nav class="navbar navbar-expand-lg bg-dark navbar-light d-none d-lg-block" id="templatemo_nav_top">
-        //   <div class="container text-light">
-        //       <div class="w-100 d-flex justify-content-between">
-        //           <div>
-        //               <i class="fa fa-envelope mx-2"></i>
-        //               <a class="navbar-sm-brand text-light text-decoration-none" href="#">info@company.com</a>
-        //               <i class="fa fa-phone mx-2"></i>
-        //               <a class="navbar-sm-brand text-light text-decoration-none" href="#">010-000-0000</a>
-        //           </div>
-        //           <div>
-        //               <a class="text-light" href="#" target="_blank" rel="sponsored"><i class="fab fa-facebook-f fa-sm fa-fw me-2"></i></a>
-        //               <a class="text-light" href="#" target="_blank"><i class="fab fa-instagram fa-sm fa-fw me-2"></i></a>
-        //               <a class="text-light" href="#" target="_blank"><i class="fab fa-twitter fa-sm fa-fw me-2"></i></a>
-        //               <a class="text-light" href="#" target="_blank"><i class="fab fa-linkedin fa-sm fa-fw"></i></a>
-        //           </div>
-        //       </div>
-        //   </div>
-        // </nav>
-        
         
         
         <nav className="navbar navbar-expand-lg navbar-light shadow">
@@ -47,13 +25,13 @@ export default function Navbar() {
             <div className="flex-fill">
                 <ul className="nav navbar-nav d-flex justify-content-between mx-lg-auto">
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Home</a>
+                        <NavLink className="nav-link" to="/">Home</NavLink>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="#">About</a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Shop</a>
+                    <NavLink className="nav-link" to="/products">Shop</NavLink>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="#">Contact</a>
