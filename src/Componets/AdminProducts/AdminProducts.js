@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
-import Product from "../Product/Product";
 import Swal from "sweetalert2";
 
 function AdminProducts() {
