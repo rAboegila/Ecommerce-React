@@ -26,7 +26,18 @@ export default function Products() {
       key,
       icon,
       children,
-      label: <Link to={{}}>{{ label }}</Link>,
+      label: (
+        <Link
+          to="https://ant.design"
+          style={{
+            textDecoration: "none",
+            color: "white",
+            fontWeight: "bolder",
+          }}
+        >
+          {label}
+        </Link>
+      ),
     };
   }
 
