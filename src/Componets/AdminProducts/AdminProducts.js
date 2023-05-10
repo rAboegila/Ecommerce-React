@@ -52,6 +52,7 @@ function AdminProducts() {
                         <th>ID</th>
                         <th>Title</th>
                         <th>Price</th>
+                        <th>Image</th>
                         <th>Operations</th>
                     </tr>
                 </thead>
@@ -61,11 +62,14 @@ function AdminProducts() {
                             <tr key={product.id}>
                                 <td>{product.id}</td>
                                 <td>{product.title}</td>
-                                <td>{product.price}</td>
+                                <td>{product.price}$</td>
+                                <td>
+                                    <img  className="productImg" src={product.image} />
+                                </td>
                                 <td>
                                     <button className="btn btn-danger btn-sm" onClick={() => { deleteProduct(product) }}>Delete</button>
                                     <Link to={`/products/${product.id}`} className="btn btn-info btn-sm">View</Link>
-                                    <button className="btn btn-primary btn-sm">Edit</button>
+                                    <Link to={`/products/${product.id}/edit`} className="btn btn-primary btn-sm">Edit</Link>
                                 </td>
                             </tr>
                         )
