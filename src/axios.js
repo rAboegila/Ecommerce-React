@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
     timeout: 5000,
     headers: {
         Authorization: localStorage.getItem('access_token')
-            ? 'JWT '+ localStorage.getItem('access_token')
+            ? 'Bearer '+ localStorage.getItem('access_token')
             : null,
         'Content-Type' : 'aplication/json',
         accept: 'application/json', 
@@ -49,8 +49,8 @@ axiosInstance.interceptors.response.use((response)=>{
                         localStorage.setItem('access_token', response.data.access);
                         localStorage.setItem('refresh_token', response.data.refresh);
 
-                        axiosInstance.defaults.headers['Authorization'] = 'JWT ' + response.data.access;
-                        originalRequest.headers['Authorization'] = 'JWT ' + response.data.access;
+                        axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + response.data.access;
+                        originalRequest.headers['Authorization'] = 'Bearer ' + response.data.access;
 
                         return axiosInstance(originalRequest);
                     })
