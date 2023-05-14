@@ -104,7 +104,7 @@ function EditProduct() {
         .then((res) => res.json())
         .then((data) => {console.log(data);})
 
-        navigate('/adminproducts');
+        navigate('/admin');
     }
 
     const [title, setTitle] = useState('');

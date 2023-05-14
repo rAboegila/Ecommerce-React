@@ -24,11 +24,11 @@ export default function App() {
       <Navbar />
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path="adminproducts" element={<AdminProducts />} />
+          <Route path="admin" element={<AdminProducts />} />
           <Route path="products/add" element={<AddProduct />} />
           <Route path="products/:productId" element={<ProductDetails />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/signup" element={<Register />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/products/:productId/edit" element={<EditProduct />} />
       </Routes>
