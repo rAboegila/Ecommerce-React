@@ -1,30 +1,22 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Spin, Card, Row, Col } from "antd";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
-import {
-  FileOutlined,
-  PieChartOutlined,
-  UserOutlined,
-  DesktopOutlined,
-  TeamOutlined,
-} from "@ant-design/icons";
+import { Breadcrumb, Layout, Menu } from "antd";
+
 import "./Products.css";
 import { Link } from "react-router-dom";
 
 export default function Products() {
   const [isLoading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [collapsed, setCollapsed] = useState(false);
   const [items, setItems] = useState([]);
   const [products, setProducts] = useState([]);
   const { Meta } = Card;
-  const { Header, Content, Footer, Sider } = Layout;
+  const { Content, Sider } = Layout;
 
-  function getItem(label, key, icon, children) {
+  function getItem(label, key, children) {
     return {
       key,
-      icon,
       children,
       label: (
         <Link
@@ -40,10 +32,6 @@ export default function Products() {
       ),
     };
   }
-
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
 
   useEffect(() => {
     setLoading(true);
@@ -80,22 +68,22 @@ export default function Products() {
 
   useEffect(() => {
     setItems([
-      getItem(categories[0], "1", <PieChartOutlined />, [
+      getItem(categories[0], "1", [
         getItem("Tom", "3"),
         getItem("Bill", "4"),
         getItem("Alex", "5"),
       ]),
-      getItem(categories[1], "2", <DesktopOutlined />, [
+      getItem(categories[1], "2", [
         getItem("Tom", "6"),
         getItem("Bill", "7"),
         getItem("Alex", "8"),
       ]),
-      getItem(categories[2], "sub1", <UserOutlined />, [
+      getItem(categories[2], "sub1", [
         getItem("Tom", "9"),
         getItem("Bill", "10"),
         getItem("Alex", "11"),
       ]),
-      getItem(categories[2], "sub2", <TeamOutlined />, [
+      getItem(categories[2], "sub2", [
         getItem("Team 1", "12"),
         getItem("Team 2", "13"),
       ]),
