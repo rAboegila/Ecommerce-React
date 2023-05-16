@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Spin, Card, Row, Col } from "antd";
-import { Breadcrumb, Layout, Menu } from "antd";
-
-import "./Products.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { Spin, Card, Row, Col, Breadcrumb, Layout, Menu } from "antd";
+// import { HeartOutlined, HeartFilled, ShopFilled } from "@ant-design/icons";
+
+import ProductCard from "../../Componets/Product-Card/Product-Card";
+import "./Products.css";
 
 export default function Products() {
   const [isLoading, setLoading] = useState(false);
@@ -46,10 +47,7 @@ export default function Products() {
       })
 
       .catch((err) => console.error(err))
-      .finally(() => {
-        console.log("catagories\n", categories);
-        console.log("items\n", items);
-      });
+      .finally(() => {});
 
     axios({
       method: "Get",
@@ -57,8 +55,6 @@ export default function Products() {
     })
       .then((res) => {
         setProducts(res.data);
-        console.log("res.data\n", res.data);
-        console.log("products\n", products);
       })
 
       .catch((err) => console.error(err))
@@ -88,30 +84,13 @@ export default function Products() {
         getItem("Team 2", "13"),
       ]),
     ]);
-  });
+  }, [categories]);
 
   const displayProducts = () => {
     return products.map((product, i) => {
       return (
         <Col className="gutter-row" xs={24} sm={12} md={12} lg={6} xl={6}>
-          <Card
-            hoverable
-            style={{
-              maxHeight: 500,
-              minHeight: 500,
-              padding: 10,
-            }}
-            loading={isLoading}
-            cover={
-              <img
-                alt="example"
-                src={product.image}
-                style={{ maxHeight: 350, padding: 10 }}
-              />
-            }
-          >
-            <Meta title={product.title} description={product.price} />
-          </Card>
+          <ProductCard product={product} isLoading={isLoading} />
         </Col>
       );
     });
@@ -161,12 +140,6 @@ export default function Products() {
               />
             </Sider>
             <Layout className="site-layout">
-              {/* <Header
-                style={{
-                  padding: 0,
-                  background: colorBgContainer,
-                }}
-              /> */}
               <Content
                 style={{
                   margin: "0 16px",
