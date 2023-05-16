@@ -6,7 +6,6 @@ import { BrowserRouter } from "react-router-dom";
 //Redux Imports
 import { Provider } from "react-redux";
 import { store } from "./App/store";
-
 //UI Frameworks
 
 // Bootstrap CSS

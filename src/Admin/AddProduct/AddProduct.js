@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import Form from 'react-bootstrap/Form';
+
 
 function AddProduct() {
 
@@ -14,24 +16,26 @@ function AddProduct() {
             body: JSON.stringify({
                 title,
                 description,
-                price
+                price,
+                image,
             })
         })
         .then((res) => res.json())
         .then((data) => {console.log(data);})
 
-        navigate('/adminproducts');
+        navigate('/admin');
     }
 
     const [title, setTitle] = useState('');
     const [description, setDesc] = useState('');
     const [price, setPrice] = useState(0);
+    const [image, setImage] = useState('')
 
     return (
         <>
             <h1>Add product</h1>
 
-            <form onSubmit={formSubmit}>
+            <form onSubmit={formSubmit} className="mt-5 mb-5">
                 <div className="mb-3">
                     <label htmlFor="exampleInputEmail1" className="form-label">Title</label>
                     <input onChange={(e)=> setTitle(e.target.value)} type="text" className="form-control" id="exampleInputEmail1" aria-describedby="Product Title" placeholder="Product Title" />
@@ -44,7 +48,10 @@ function AddProduct() {
                     <label htmlFor="examplePrice" className="form-label">Price</label>
                     <input onChange={(e)=> setPrice(e.target.value)} type="number" className="form-control" id="examplePrice" aria-describedby="Product Price" placeholder="Product Price" />
                 </div>
-                
+                <Form.Group controlId="formFile" className="mb-3">
+                 <Form.Label>Default file input example</Form.Label>
+                 <Form.Control type="file" onChange={(e)=>setImage(e.target.value)} />
+                 </Form.Group>
                
                 <button type="submit" className="btn btn-primary">Add Product</button>
             </form>
