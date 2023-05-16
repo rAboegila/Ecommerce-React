@@ -52,6 +52,7 @@ function Register() {
 
 
     console.log(formDataWithImage.values);
+    console.log(formDataWithImage.get("email"));
     console.log(formData);
 
     // axiosInstance

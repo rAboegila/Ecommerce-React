@@ -1,21 +1,24 @@
-import axios from "axios";
-
-const baseURL = 'http://127.0.0.1:9000/';
-
-const axiosInstance = axios.create({
-    baseURL: baseURL,
-    timeout: 5000,
-    headers: {
-      Authorization: localStorage.getItem('token')
-        ? 'Bearer '+ localStorage.getItem('token')
-        : null,
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-  });
+import axios from 'axios';
+import { logoutUser } from './authActions';
+import {getLoggedIn} from './authSlice';
+// import { useSelector } from 'react-redux';
+import { clippingParents } from '@popperjs/core';
+import store from './store';
 
 
-// axiosInstance.interceptors.response.use((response)=>{
+const api = axios.create({
+  baseURL: 'http://127.0.0.1:9000/',
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// api.interceptors.response.use((response)=>{
 //     return response
 // },
 //     async function (error) {
@@ -34,17 +37,17 @@ const axiosInstance = axios.create({
 //         }
         
 //         if (error.response.data.code === 'token_not_found' && error.response.status === 401 && error.response.statusText === 'Unauthorized'){
-//             const refreshToken = localStorage.getItem('refresh_token');
+//             const refresh_token = localStorage.getItem('refresh_token');
 
-//             if(refreshToken){
-//                 const tokenParts = JSON.parse(atob(refreshToken.split('.')[1]));
+//             if(refresh_token){
+//                 const tokenParts = JSON.parse(atob(refresh_token.split('.')[1]));
 
 //                 const now = Math.ceil(Date.now()/ 1000);
 //                 console.log(tokenParts.exp);
 
 //                 if(tokenParts.exp > now) {
 //                     return axiosInstance
-//                     .post('jwt/refresh', {refresh: refreshToken})
+//                     .post('jwt/refresh/', {refresh: refresh_token})
 //                     .then((response)=>{
 //                         localStorage.setItem('token', response.data.access);
 //                         localStorage.setItem('refresh_token', response.data.refresh);
@@ -68,9 +71,6 @@ const axiosInstance = axios.create({
 //         }
 
 //     }
-// )
 
 
-
-
-export default axiosInstance;
+export default api;

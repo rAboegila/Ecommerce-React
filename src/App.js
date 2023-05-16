@@ -16,12 +16,16 @@ import ProductDetails from './Componets/ProducDetails/ProductDetails';
 import Register from './Componets/Register/Register';
 import Login from './Componets/Login/Login';
 import EditProduct from './Componets/Edit Product/EditProduct';
+import Newlogin from './Componets/REDUXES/Newlogin';
+import { Provider } from 'react-redux';
+import store from './Componets/REDUXES/store';
 
 export default function App() {
   return (
     <div className="app">
       
       <Navbar />
+          <Provider store={store}>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path="admin" element={<AdminProducts />} />
@@ -29,9 +33,10 @@ export default function App() {
           <Route path="products/:productId" element={<ProductDetails />} />
           <Route path="/products" element={<Products />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Newlogin />} />
           <Route path="/products/:productId/edit" element={<EditProduct />} />
       </Routes>
+          </Provider>
     
   <Footer />
 

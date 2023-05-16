@@ -3,8 +3,22 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import authSlice from "../REDUXES/authSlice";
 
 function AdminProducts() {
+    const navigate = useNavigate();
+
+    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn) || false;
+
+    console.log(isLoggedIn);
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+          navigate("/login");
+        }
+      }, [isLoggedIn, navigate]);
 
     const [products, setProducts] = useState([]);
     useEffect(() => {
