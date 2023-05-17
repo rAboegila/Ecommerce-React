@@ -18,9 +18,11 @@ import Register from './Componets/Register/Register';
 import Login from './Componets/Login/Login';
 import EditProduct from './Admin/Edit Product/EditProduct';
 import Newlogin from './Componets/Login/Newlogin';
+import Admin from "./Admin/Admin/Admin";
 
 
 export default function App() {
+  
   return (
     <div className="app">
       <Navbar />
@@ -33,12 +35,10 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Newlogin />} />
           <Route path="/products/:productId/edit" element={<EditProduct />} />
+          <Route path="/newadmin" element={<Admin />} />
       </Routes>
     
   <Footer />
-
-
-      <Footer />
     </div>
   );
 }

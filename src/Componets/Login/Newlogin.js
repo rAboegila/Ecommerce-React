@@ -1,83 +1,11 @@
-// import { useState } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// // import { loginUser } from '../redux/authActions';
-// import { loginUser } from './authActions';
-// import { useNavigate } from "react-router";
-// import api from '../../axios';
-// import { login } from './authSlice';
-
-// function Login() {
-// const navigate = useNavigate();
-
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const dispatch = useDispatch();
-//   // const { isLoading, error } = useSelector((state) => state.auth);
-//   const { isLoading, isAuthenticated, user, error } = useSelector((state) => state.auth || {});
-//   const [formData, setFormData] = useState({
-//         email: '',
-//         password: '',
-//       });
-
-//   const handleLogin = async (event) => {
-//     event.preventDefault();
-//     try {
-//         const response = await api.post(
-//           `/account/login/`,
-//           {
-//          email: email,
-//          password: password,
-//          }
-//         )
-
-//         if (!response.data.tokens) {
-//         //   toast.error("Invalid username or password", {
-//         //     position: toast.POSITION.TOP_RIGHT,
-//         //   }
-//           console.log(response.data)
-//         };
-
-//         localStorage.setItem("token", response.data.tokens.access);
-//         // toast.success("Login Succsefully", {
-//         //   position: toast.POSITION.TOP_RIGHT,
-//         // });
-//         console.log("Login Succsefully");
-//         navigate("/");
-//         dispatch(login());
-//       } catch (error) {
-//         console.error(error);
-//       }
-//   };
-
-//   return (
-//     <form onSubmit={handleLogin}>
-//       <input
-//         type="email"
-//         placeholder="Email"
-//         value={email}
-//         onChange={(event) => setEmail(event.target.value)}
-//       />
-//       <input
-//         type="password"
-//         placeholder="Password"
-//         value={password}
-//         onChange={(event) => setPassword(event.target.value)}
-//       />
-//       <button type="submit" disabled={isLoading }>
-//     {isLoading ? 'Logging in...' : 'Login'}
-//   </button>
-//   {error && <p>{error}</p>}
-// </form>
-// );
-// }
-
-// export default Login;
-
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import api from "../../Lib/axios";
 import { login } from "../../Features/auth/authSlice";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import { setIsAdmin } from '../../Lib/IsAdmin';
 
 function Login() {
   const navigate = useNavigate();
@@ -118,34 +46,59 @@ function Login() {
 
       localStorage.setItem("token", response.data.data.token);
       console.log(response.data.data.token);
+      console.log(response.data.data);
       console.log("Login Successfully");
+      dispatch(setIsAdmin(response.data.data.is_admin));
       navigate("/");
       dispatch(login()); // Dispatch the login action
+      console.log(response.data.data.is_admin);
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? "Logging in..." : "Login"}
-      </button>
-      {error && <p>{error}</p>}
-    </form>
+    <div className='container mt-5 mb-5'>
+       <div className='text-center'>SIGN UP</div>
+       <Form onSubmit={handleLogin}>
+    
+         <Form.Group className="mb-3" controlId="formBasicEmail">
+           <Form.Label>Email address</Form.Label>
+           <Form.Control type="email" value={email} placeholder="email" onChange={(event) => setEmail(event.target.value)} required/>
+           <Form.Text className="text-muted">
+             We'll never share your email with anyone else.
+           </Form.Text>
+         </Form.Group>
+    
+         <Form.Group className="mb-3" controlId="formBasicPassword">
+           <Form.Label>Password</Form.Label>
+           <Form.Control type="password" value={password} placeholder="Password" onChange={(event) => setPassword(event.target.value)} required/>
+         </Form.Group>
+         <Button variant="primary" type="submit">
+           Submit
+         </Button>
+       </Form>
+     </div>
   );
 }
 
+
+// <form onSubmit={handleLogin}>
+//       <input
+//         type="email"
+//         placeholder="Email"
+//         value={email}
+//         onChange={(event) => setEmail(event.target.value)}
+//       />
+//       <input
+//         type="password"
+//         placeholder="Password"
+//         value={password}
+//         onChange={(event) => setPassword(event.target.value)}
+//       />
+//       <button type="submit" disabled={isLoading}>
+//         {isLoading ? "Logging in..." : "Login"}
+//       </button>
+//       {error && <p>{error}</p>}
+//     </form>
 export default Login;

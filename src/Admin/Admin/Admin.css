@@ -1,0 +1,140 @@
+/* Use this markup as a guide for spacing and font sizes, not necessarily as a guide for how to mark up these headers. */
+@font-face {
+    font-family: "Proxima Nova";
+    src: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/370426/ProximaNova-Reg-webfont.ttf) format("ttf");
+}
+@font-face {
+    font-family: "Proxima Nova-Bold";
+    src: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/370426/ProximaNova-Bold-webfont.ttf) format("ttf");
+}
+*, *:before, *:after {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+body {
+    font-family: "Proxima Nova", "Helvetica Nueue", Helvetica, Arial, sans-serif;
+}
+/* Used for presentation purposes */
+.version {
+    width: 800px;
+    height: 250px;
+    margin: 30px auto;
+    box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.25);
+}
+.page-header {
+    position: relative;
+    padding: 20px 0px 30px 0px;
+    margin: 0px 20px;
+    border-bottom: 1px solid #ccc;
+}
+.page-header.page-header--with-nav {
+    padding-bottom: 0px;
+    border-bottom: none;
+}
+.page-title {
+    font-size: 32px;
+    line-height: 1;
+    font-weight: normal;
+    margin: 0px;
+    color: black;
+}
+.button-group {
+    position: absolute;
+    top: 20px;
+    right: 0px;
+}
+.btn {
+    -webkit-appearance: none;
+    background-color: #fff;
+    font-family: "Proxima Nova-Bold", "Proxima Nova", "Helvetica Nueue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 1;
+    text-transform: uppercase;
+    border: 1px solid #ccc;
+    padding: 12px;
+}
+.btn-primary {
+    color: #333;
+    background-color: #00e7b2;
+    border-color: #00e7b2;
+}
+.btn-icon {
+    position: relative;
+    width: 38px;
+    height: 38px;
+}
+.btn-icon:before {
+    content: " ";
+    position: asbolute;
+    left: 0px;
+    top: 0px;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+    background-color: blue;
+}
+.button-group .btn {
+    margin-right: 0px;
+    vertical-align: top;
+}
+.group-segment {
+    position: relative;
+    display: inline-block;
+    height: 32px;
+    width: 1px;
+    margin: 4px 12px;
+    background-color: #ccc;
+}
+.indicator-group {
+    position: relative;
+    margin-top: 6px;
+}
+.indicator {
+    font-size: 12px;
+    line-height: 1;
+    position: relative;
+    padding-left: 20px;
+}
+.indicator:before {
+    content: " ";
+    position: absolute;
+    left: 0px;
+    top: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background-color: #00e7b2;
+}
+.page-header--with-nav .nav {
+    margin-top: 30px;
+}
+.nav-list {
+    padding: 0px;
+    margin: 0px;
+    font-size: 0px;
+    border-bottom: 1px solid #ccc;
+}
+.nav-list li {
+    list-style-type: none;
+    display: inline-block;
+    font-size: 14px;
+    margin-right: 20px;
+    padding-bottom: 10px;
+}
+.nav-list li.active {
+    border-bottom: 3px solid #00e7b2;
+}
+.breadcrumb {
+    background-color: #333;
+    color: #fff;
+    padding: 12px 20px;
+    font-family: "Proxima Nova-Bold", "Proxima Nova", "Helvetica Nueue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 12px;
+}
+.breadcrumb a {
+    color: #00e7b2;
+    text-decoration: underline;
+}

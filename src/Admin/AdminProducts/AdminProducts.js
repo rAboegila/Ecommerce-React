@@ -5,9 +5,21 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { selectIsAdmin } from '../../Lib/IsAdmin';
 
 function AdminProducts() {
+  const isAdmin = useSelector(selectIsAdmin);
   const navigate = useNavigate();
+
+  console.log(isAdmin);
+
+  useEffect(() => {
+    if (!isAdmin) {
+      navigate("/");
+    }
+  }, [isAdmin]);
+
+
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn) || false;
 
@@ -25,21 +37,21 @@ function AdminProducts() {
   }, []);
 
   const getAllProducts = () => {
-    fetch("https://fakestoreapi.com/products")
+    fetch("http://127.0.0.1:8000/product/list/")
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        setProducts(data);
+        setProducts(data.data);
       });
   };
 
   const deleteProduct = (product) => {
     Swal.fire({
-      title: `Are you sure to delete ${product.title}?`,
+      title: `Are you sure to delete ${product.name}?`,
       showCancelButton: true,
     }).then((data) => {
       if (data.isConfirmed) {
-        fetch(`https://fakestoreapi.com/products/${product.id}`, {
+        fetch(`http://127.0.0.1:8000/product/delete/${product.id}/`, {
           method: "DELETE",
         })
           .then((res) => res.json())
@@ -71,10 +83,10 @@ function AdminProducts() {
             return (
               <tr key={product.id}>
                 <td>{product.id}</td>
-                <td>{product.title}</td>
+                <td>{product.name}</td>
                 <td>{product.price}$</td>
                 <td>
-                  <img className="productImg" src={product.image} />
+                  <img className="productImg" src={product.imageUrl} />
                 </td>
                 <td>
                   <button
@@ -86,13 +98,13 @@ function AdminProducts() {
                     Delete
                   </button>
                   <Link
-                    to={`/products/${product.id}`}
+                    to={`/product/${product.id}/`}
                     className="btn btn-info btn-sm"
                   >
                     View
                   </Link>
                   <Link
-                    to={`/products/${product.id}/edit`}
+                    to={`/product/update/${product.id}/`}
                     className="btn btn-primary btn-sm"
                   >
                     Edit
