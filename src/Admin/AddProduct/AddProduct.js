@@ -212,18 +212,19 @@ function AddProduct() {
 
     const formSubmit = (e)=>{
         e.preventDefault();
-    
+        
         const token = localStorage.getItem("token");
 
         const formData = new FormData();
         formData.append('name', name);
         formData.append('description', description);
         formData.append('price', price);
-        formData.append('parent_category', "Men's Cloths");
+        formData.append('parent_category', categoryId);
         formData.append('subcategory', subcategoryId);
-        formData.append('image', imageUrl);
+        formData.append('imageUrl', imageUrl);
 
         console.log(formData);
+        console.log(categoryId);
 
         axios.post('http://127.0.0.1:8000/product/create/', formData, {
             headers: {
@@ -233,11 +234,12 @@ function AddProduct() {
         })
         .then((response) => {
             console.log(response.data);
-            navigate('/admin');
+            navigate('/adminproducts');
         })
         .catch((error) => {
             console.error(error);
         });
+
     }
     
     const [name, setName] = useState('');
@@ -264,10 +266,10 @@ function AddProduct() {
         axios.get(`http://127.0.0.1:8000/category/${catId}/`)
             .then((response) => {
                 console.log(response.data.data);
+                setCategoryId(response.data.data.name);
                 setSubcategory(response.data.data.subcategories);
                 console.log(response.data.data.subcategories);
                 console.log(subcategory);
-                setCategoryId(catId);
             })
             .catch((error) => {
                 console.error(error);
@@ -298,19 +300,22 @@ function AddProduct() {
                         <label htmlFor="examplePrice" className="form-label">Price</label>
                         <input onChange={(e)=> setPrice(e.target.value)} type="number" className="form-control" id="examplePrice" aria-describedby="Product Price" placeholder="Product Price" />
                     </div>
+                    <div className="mb-3">
                     <select className="btn-primary" onChange={(e)=> {getSubCategories(e.target.value)}}>
                         <option value="">Select Category</option>
                         {category.map((cat)=>{
                             return <option className="btn btn-info m-4" key={cat.id} value={cat.id}>{cat.name}</option>
                         })}
                     </select>
-
+                    </div>
+                    <div className="mb-3">
                     <select className="btn-primary" onChange={(e)=> setSubcategoryId(e.target.value)}>
                         <option>Select Subcategory</option>
                         {Array.isArray(subcategory) &&  subcategory.map((subcat)=>{
                             return <option className="btn btn-info m-4" key={subcat.id} value={subcat.name}>{subcat.name}</option>
                         })}
                     </select>
+                    </div>
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>Upload Product Image</Form.Label>
                         <Form.Control type="file" onChange={(e)=>setImage(e.target.files[0])} />

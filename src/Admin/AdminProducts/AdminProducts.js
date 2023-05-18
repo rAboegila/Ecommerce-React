@@ -6,30 +6,34 @@ import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectIsAdmin } from '../../Lib/IsAdmin';
+import api from "../../Lib/axios";
+
 
 function AdminProducts() {
-  const isAdmin = useSelector(selectIsAdmin);
+  // const isAdmin = useSelector(selectIsAdmin);
   const navigate = useNavigate();
 
-  console.log(isAdmin);
+  // console.log(isAdmin);
 
-  useEffect(() => {
-    if (!isAdmin) {
-      navigate("/");
-    }
-  }, [isAdmin]);
+  // useEffect(() => {
+  //   if (!isAdmin) {
+  //     navigate("/");
+  //   }
+  // }, [isAdmin]);
+
+  
 
 
 
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn) || false;
+  // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn) || false;
 
-  console.log(isLoggedIn);
+  // console.log(isLoggedIn);
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
-    }
-  }, [isLoggedIn, navigate]);
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     navigate("/login");
+  //   }
+  // }, [isLoggedIn, navigate]);
 
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -49,15 +53,10 @@ function AdminProducts() {
     Swal.fire({
       title: `Are you sure to delete ${product.name}?`,
       showCancelButton: true,
-    }).then((data) => {
+    }).then( async(data) => {
       if (data.isConfirmed) {
-        fetch(`http://127.0.0.1:8000/product/delete/${product.id}/`, {
-          method: "DELETE",
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            getAllProducts();
-          });
+       await api.delete(`/product/delete/${product.id}/`)
+          getAllProducts();
       }
     });
   };
