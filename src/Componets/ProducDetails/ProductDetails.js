@@ -10,7 +10,7 @@ const [product, setProduct] = useState();
 let {productId} = useParams();
 
 useEffect(()=>{
-    fetch(`https://fakestoreapi.com/products/${productId}`)
+    fetch(`https://ecommerce-django-app.onrender.com/products/${productId}`)
     .then((res)=> res.json())
     .then((product)=>{
         console.log(product);

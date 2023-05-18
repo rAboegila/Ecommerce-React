@@ -9,6 +9,7 @@ import {
   incrementItem,
   decrementItem,
 } from "../../Features/cart/cartSlice";
+
 export default function CartList() {
   const cartItems = useSelector(getCartItems);
   const dispatch = useDispatch();

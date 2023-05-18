@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { Spin, Card, Row, Col, Breadcrumb, Layout, Menu } from "antd";
 // import { HeartOutlined, HeartFilled, ShopFilled } from "@ant-design/icons";
 
+import api from "../../Lib/axios";
+
 import ProductCard from "../../Componets/Product-Card/Product-Card";
 import "./Products.css";
+import { clippingParents } from "@popperjs/core";
 
 export default function Products() {
   const [isLoading, setLoading] = useState(false);
@@ -15,7 +17,8 @@ export default function Products() {
   const { Meta } = Card;
   const { Content, Sider } = Layout;
 
-  function getItem(label, key, children) {
+  function getItem(label, key) {
+    const children = api.get(`/category/${key}/subcategories/`);
     return {
       key,
       children,
@@ -37,22 +40,18 @@ export default function Products() {
   useEffect(() => {
     setLoading(true);
 
-    axios({
-      method: "Get",
-      url: "https://fakestoreapi.com/products/categories",
-    })
+    api
+      .get("category/list/")
       .then((res) => {
+        const myData = res.data;
         setCategories(res.data);
-        console.log("res.data\n", res.data);
       })
 
       .catch((err) => console.error(err))
       .finally(() => {});
 
-    axios({
-      method: "Get",
-      url: "https://fakestoreapi.com/products",
-    })
+    api
+      .get("product/list/")
       .then((res) => {
         setProducts(res.data);
       })
@@ -62,34 +61,18 @@ export default function Products() {
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    setItems([
-      getItem(categories[0], "1", [
-        getItem("Tom", "3"),
-        getItem("Bill", "4"),
-        getItem("Alex", "5"),
-      ]),
-      getItem(categories[1], "2", [
-        getItem("Tom", "6"),
-        getItem("Bill", "7"),
-        getItem("Alex", "8"),
-      ]),
-      getItem(categories[2], "sub1", [
-        getItem("Tom", "9"),
-        getItem("Bill", "10"),
-        getItem("Alex", "11"),
-      ]),
-      getItem(categories[2], "sub2", [
-        getItem("Team 1", "12"),
-        getItem("Team 2", "13"),
-      ]),
-    ]);
-  }, [categories]);
-
   const displayProducts = () => {
     return products.map((product, i) => {
       return (
-        <Col className="gutter-row" xs={24} sm={12} md={12} lg={6} xl={6}>
+        <Col
+          key={product.id}
+          className="gutter-row"
+          xs={24}
+          sm={12}
+          md={12}
+          lg={6}
+          xl={6}
+        >
           <ProductCard product={product} isLoading={isLoading} />
         </Col>
       );
@@ -112,12 +95,8 @@ export default function Products() {
             <Sider
               breakpoint="lg"
               collapsedWidth="0"
-              onBreakpoint={(broken) => {
-                console.log(broken);
-              }}
-              onCollapse={(collapsed, type) => {
-                console.log(collapsed, type);
-              }}
+              onBreakpoint={(broken) => {}}
+              onCollapse={(collapsed, type) => {}}
             >
               <div
                 style={{

@@ -14,7 +14,7 @@ export default function CategoryCard() {
       </Link>
       <h5 className="text-center mt-3 mb-3">Watches</h5>
       <p className="text-center">
-        <aLink className="btn btn-success">Go Shop</aLink>
+        <Link className="btn btn-success">Go Shop</Link>
       </p>
     </div>
   );
