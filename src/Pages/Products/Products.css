@@ -27,3 +27,8 @@
 .ant-spin-dot-item {
   background-color: rgb(47, 243, 47) !important;
 }
+#all-button {
+  width: 90%;
+  margin-top: 5px;
+  margin-left: 7px;
+}

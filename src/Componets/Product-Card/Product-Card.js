@@ -35,7 +35,11 @@ export default function ProductCard({ product, isLoading }) {
 
         if (res.data.quantity > 0) {
           product.quantity = res.data.quantity;
+          product.size = choosenSize;
+          product.color = choosenColor;
           addToCart();
+          setModalOpen(false);
+          setInStock(true);
         } else {
           setInStock(false);
         }
@@ -47,7 +51,7 @@ export default function ProductCard({ product, isLoading }) {
     setInStock(true);
   };
   const addToCart = () => {
-    console.log("added to cart>>", product);
+    console.log("atempt to add to cart>>", product);
     dispatch(addItem(product));
   };
 

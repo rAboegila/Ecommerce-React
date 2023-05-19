@@ -1,30 +1,60 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Spin, Card, Row, Col, Breadcrumb, Layout, Menu } from "antd";
+import { Spin, Card, Row, Col, Breadcrumb, Layout, Menu, Button } from "antd";
 // import { HeartOutlined, HeartFilled, ShopFilled } from "@ant-design/icons";
 
 import api from "../../Lib/axios";
 
 import ProductCard from "../../Componets/Product-Card/Product-Card";
 import "./Products.css";
-import { clippingParents } from "@popperjs/core";
 
 export default function Products() {
   const [isLoading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [items, setItems] = useState([]);
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
   const { Meta } = Card;
   const { Content, Sider } = Layout;
 
-  function getItem(label, key) {
-    const children = api.get(`/category/${key}/subcategories/`);
+  function getItem(name, id, children) {
+    const key = "CatID" + id;
     return {
       key,
       children,
       label: (
         <Link
-          to="https://ant.design"
+          onClick={() => {
+            const output = filteredProducts.filter(
+              (product) => product.parent_category === name
+            );
+            setFilteredProducts(output);
+          }}
+          style={{
+            textDecoration: "none",
+            color: "white",
+            fontWeight: "bolder",
+          }}
+        >
+          {name}
+        </Link>
+      ),
+    };
+  }
+  function getChildItem(label, id, children) {
+    const key = "SubID" + id;
+    return {
+      key,
+      children,
+      label: (
+        <Link
+          onClick={() => {
+            const output = filteredProducts.filter(
+              (product) => product.subcategory === label
+            );
+            setFilteredProducts(output);
+          }}
           style={{
             textDecoration: "none",
             color: "white",
@@ -45,6 +75,15 @@ export default function Products() {
       .then((res) => {
         const myData = res.data;
         setCategories(res.data);
+        setItems(
+          myData.map((cat) => {
+            const children = cat.subcategories.map((child) =>
+              getChildItem(child.name, cat.name + "-" + child.name)
+            );
+
+            return getItem(cat.name, cat.id, children);
+          })
+        );
       })
 
       .catch((err) => console.error(err))
@@ -54,6 +93,7 @@ export default function Products() {
       .get("product/list/")
       .then((res) => {
         setProducts(res.data);
+        setFilteredProducts(res.data);
       })
 
       .catch((err) => console.error(err))
@@ -62,7 +102,7 @@ export default function Products() {
   }, []);
 
   const displayProducts = () => {
-    return products.map((product, i) => {
+    return filteredProducts.map((product, i) => {
       return (
         <Col
           key={product.id}
@@ -110,9 +150,17 @@ export default function Products() {
                   background: "rgba(255, 255, 255, 0.2)",
                 }}
               />
+              <Button
+                id="all-button"
+                block
+                onClick={() => {
+                  setFilteredProducts(products);
+                }}
+              >
+                ALL
+              </Button>
               <Menu
                 theme="dark"
-                defaultSelectedKeys={["1"]}
                 mode="inline"
                 items={items}
                 style={{ textTransform: "capitalize" }}
@@ -124,14 +172,6 @@ export default function Products() {
                   margin: "0 16px",
                 }}
               >
-                <Breadcrumb
-                  style={{
-                    margin: "16px 0",
-                  }}
-                >
-                  <Breadcrumb.Item>User</Breadcrumb.Item>
-                  <Breadcrumb.Item>Bill</Breadcrumb.Item>
-                </Breadcrumb>
                 <Row
                   className="mx-auto"
                   style={{ paddingTop: 50, paddingBottom: 50 }}
