@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from "react";
-import axiosInstance from "../../axios";
+import axiosInstance from "../../Lib/axios";
 import { useNavigate } from "react-router";
+import Link from "antd/es/typography/Link";
 
 function Logout(){
 
@@ -15,7 +16,7 @@ useEffect(()=>{
     axiosInstance.defaults.headers['Authorization'] = null;
     navigate('/login');
 });
-    return <div>Logout</div>
+    return <Link to={"/login"}>Logout</Link>
 }
 
 export default Logout;
