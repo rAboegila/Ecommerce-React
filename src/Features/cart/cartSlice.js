@@ -24,6 +24,8 @@ const initialState = {
     },
   ],
   isOpen: false,
+  loading: false,
+  error: "",
 };
 
 const getIndex = (array, toFind) => {
@@ -58,24 +60,46 @@ const closeCartDrawer = (state) => {
   state.isOpen = false;
 };
 
-/* const fetchUserById = createAsyncThunk(
-  'users/fetchByIdStatus',
-  async (userId: number, thunkAPI) => {
-    const response = await userAPI.fetchById(userId)
-    return response.data
+const userToken = (state, action) => {
+  state.userToken = action.payload;
+};
+
+export const fetchCartItems = createAsyncThunk(
+  "cart/fetchItems",
+  async (token) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await api.get("cart/list/", config);
+    return response.data;
   }
+);
 
-  const fetchUserById = createAsyncThunk('users/fetchById', 
-  async (userId, thunkApi) => {
-  const response = await fetch(`https://reqres.in/api/users/${userId}`, {
-    headers: {
-      Authorization: `Bearer ${thunkApi.extra.jwt}`,
-    },
-  })
-  return (await response.json()) as MyData
+/*
+export const fetchCartItems = createAsyncThunk('cart/fetchItems', () => {
+return axios
+.get ("https://jsonplaceholder.typicode.com/users')
+.then( (response) =› response.data)
 })
-
-
+const userslice = createslice({
+name: 'user', initialState,
+extrareducers: (builder) =› {
+builder.addCase(fetchUsers-pending, (state) => {
+state.loading = true
+})
+builder. addCase(fetchUsers. fulfilled, (state, action) => {
+state. loading = false
+state.users = action.payload
+state.error = ''
+})
+builder.addCase(fetchUsers.rejected, (state, action) => {
+state. loading = false
+state.users = []
+state.error = action.error message
+})
+}
 ) */
 const cartSlice = createSlice({
   name: "cart",
@@ -88,21 +112,21 @@ const cartSlice = createSlice({
     openCart: openCartDrawer,
     closeCart: closeCartDrawer,
   },
-  //   extraReducers: (builder) => {
-  //     builder.addCase(fetchUsers.pending, (state) => {
-  //     state.loading = true
-  //     })
-  //     builder.addCase(fetchUsers. fulfilled, (state, action) => {
-  //     state.loading = false
-  //     state.users = action.payload
-  //     state.error =''
-  //   })
-  //     T
-  //     builder.addCase(fetchUsers.rejected, (state, action) => {
-  //     state. loading = false
-  //     state.users = []
-  //     state.error = action. error.message
-  //     })
+  extrareducers: (builder) => {
+    builder
+      .addCase(fetchCartItems.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchCartItems.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = action.payload;
+      })
+      .addCase(fetchCartItems.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+  },
 });
 
 export default cartSlice.reducer;
@@ -117,3 +141,5 @@ export const {
 export const getCartItems = (state) => state.cart.cartItems;
 export const isOpen = (state) => state.cart.isOpen;
 export const getNumItems = (state) => state.cart.cartItems.length;
+export const getLoading = (state) => state.cart.loading;
+export const getError = (state) => state.cart.error;

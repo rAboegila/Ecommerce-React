@@ -8,13 +8,19 @@ import {
   getCartItems,
   incrementItem,
   decrementItem,
+  fetchCartItems,
 } from "../../Features/cart/cartSlice";
+import { useEffect } from "react";
 
 export default function CartList() {
   const cartItems = useSelector(getCartItems);
   const dispatch = useDispatch();
   const addDisable = (item) => {};
   const removeDisable = (item) => {};
+
+  // useEffect(()=>{
+  //   dispatch(fetchCartItems());
+  // });
   return (
     <List
       itemLayout="horizontal"
