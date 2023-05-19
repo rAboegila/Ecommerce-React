@@ -19,6 +19,8 @@ import Login from './Componets/Login/Login';
 import EditProduct from './Admin/Edit Product/EditProduct';
 import Newlogin from './Componets/Login/Newlogin';
 import Admin from "./Admin/Admin/Admin";
+import ProtectedRoutes from "./Lib/ProtectedRoutes";
+import ProtectedUserRoutes from "./Lib/ProtectedUserRoute";
 
 
 export default function App() {
@@ -27,15 +29,36 @@ export default function App() {
     <div className="app">
       <Navbar />
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path="admin" element={<AdminProducts />} />
-          <Route path="products/add" element={<AddProduct />} />
-          <Route path="products/:productId" element={<ProductDetails />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Newlogin />} />
-          <Route path="/products/:productId/edit" element={<EditProduct />} />
-          <Route path="/newadmin" element={<Admin />} />
+        <Route
+            element={<ProtectedRoutes requiresLogin={true} redirectTo="/" />}
+          >
+              <Route path="adminproducts" element={<AdminProducts />} />
+              <Route path="products/add" element={<AddProduct />} />
+              <Route path="/product/update/:productId" element={<EditProduct />} />
+              <Route path="/admin" element={<Admin />} />
+
+          </Route>
+
+          <Route
+            element={<ProtectedUserRoutes requiresLogin={true} redirectTo="/login" />}
+          >
+
+          <Route exact path="product/:productId/" element={<ProductDetails />} />
+              <Route path="/products" element={<Products />} />
+          </Route>
+
+
+          <Route
+            element={<ProtectedUserRoutes requiresLogin={false} redirectTo="/" />}
+          >
+
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Newlogin />} />
+          </Route>
+
+          
+
+              <Route path='/' element={<Home />} />
       </Routes>
     
   <Footer />

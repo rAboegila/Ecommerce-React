@@ -14,7 +14,7 @@ useEffect(()=>{
     .then((res)=> res.json())
     .then((product)=>{
         console.log(product);
-        setProduct(product)
+        setProduct(product.data)
     })
 },[])
 
@@ -22,14 +22,15 @@ useEffect(()=>{
         <>
         { product && 
         <>
-        <img src={product.image} />
-        <h1>{product.title}</h1>
-        <h2>{product.category}</h2>
+        <img src={product.imageUrl} />
+        <h1>{product.name}</h1>
+        <h2>{product.parent_category}</h2>
+        <h2>{product.subcategory}</h2>
         <h2>{product.price}</h2>
         <p>{product.description}</p>
         </>
         }
-        <Link to="/adminproducts" className="btn btn-info">Back To Admin Page</Link> 
+        <Link to="/admin" className="btn btn-info">Back To Admin Page</Link> 
         </>
 
     )

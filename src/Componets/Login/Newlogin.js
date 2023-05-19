@@ -44,13 +44,19 @@ function Login() {
         console.log(response.data);
       }
 
-      localStorage.setItem("token", response.data.data.token);
-      console.log(response.data.data.token);
-      console.log(response.data.data);
-      console.log("Login Successfully");
+      if(response.data.data.is_admin){
+      localStorage.setItem("token_admin", response.data.data.token);
       dispatch(setIsAdmin(response.data.data.is_admin));
-      navigate("/");
-      dispatch(login()); // Dispatch the login action
+      navigate("/admin")
+      }else {
+        localStorage.setItem("token", response.data.data.token);
+        console.log(response.data.data.token);
+        console.log(response.data.data);
+        console.log("Login Successfully");
+        dispatch(login()); // Dispatch the login action
+        navigate("/");
+
+      }
       console.log(response.data.data.is_admin);
     } catch (error) {
       console.error(error);

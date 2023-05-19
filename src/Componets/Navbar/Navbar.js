@@ -1,22 +1,28 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 //Redux
 import { openCart, getNumItems } from "../../Features/cart/cartSlice";
 
 //Components
 import Cart from "../Cart/Cart";
+// import Logout from "../Logout";
 
 import "./Navbar.css";
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const cartLength = useSelector(getNumItems);
   console.log(cartLength);
   const showDrawer = () => {
     dispatch(openCart());
   };
+  const isAdmin = useSelector(state=>state.user.is_admin);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light shadow">
@@ -68,6 +74,8 @@ export default function Navbar() {
               </li>
             </ul>
           </div>
+          
+
           <div className="navbar align-self-center d-flex">
             <div className="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
               <div className="input-group">
@@ -108,7 +116,15 @@ export default function Navbar() {
                 +99
               </span> */}
             </NavLink>
+            
           </div>
+            {isAdmin && <Link className="mx-1" style={{textDecoration: 'none'}} to={'/admin'} >Adminnn</Link>}
+
+            {!isLoggedIn && !isAdmin ? (
+            <>
+            <Link className="mx-1 btn btn-primary" style={{textDecoration: 'none'}} to={'/login'} >Login</Link>  <Link className="mx-1 btn btn-primary" style={{textDecoration: 'none'}} to={'/register'} >Register</Link>
+            </>
+            ) : ""}
         </div>
       </div>
 
