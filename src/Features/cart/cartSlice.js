@@ -9,8 +9,8 @@ const initialState = {
   price: 0,
 };
 
-const getIndex = (array, toFind) => {
-  array.findIndex((item) => item.id === toFind.id);
+const getIndex = (array, itemToFind) => {
+  array.findIndex((item) => item.id === itemToFind.id);
 };
 const popItem = (array, index) => {
   array.splice(index, 1);
@@ -28,11 +28,9 @@ const removeItemReducer = (state, action) => {
   state.price -= action.payload.price;
 };
 const incrementItemReducer = (state, action) => {
-  // const index = getIndex(state.cartItems, action.payload);
   state.cartItems[action.payload].quantity++;
 };
 const decrementItemReducer = (state, action) => {
-  // const index = getIndex(state.cartItems, action.payload);
   state.cartItems[action.payload].quantity--;
 };
 const openCartDrawer = (state) => {

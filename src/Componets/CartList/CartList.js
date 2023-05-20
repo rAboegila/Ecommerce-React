@@ -37,6 +37,7 @@ export default function CartList() {
   useEffect(() => {
     const data = dispatch(fetchCartItems());
   }, []);
+
   const removeFromCart = (item) => {
     console.log("atempt to remove from cart>>", item);
 
@@ -49,6 +50,34 @@ export default function CartList() {
       })
       .catch((err) => {
         console.log("add to cart failed!\n err >>> ", err);
+      });
+  };
+  const incrementQuantity = (item, index) => {
+    console.log("atempt to inc from cart>>", item);
+    const body = { quantity: item.quantity + 1 };
+    api
+      .put(`/cart/item/update/${item.id}/`, body)
+      .then((res) => {
+        console.log("inc item  succesfull!\nres >>> ", res);
+        const respo = dispatch(incrementItem(index));
+        console.log(respo);
+      })
+      .catch((err) => {
+        console.log("inc item failed!\n err >>> ", err);
+      });
+  };
+  const decrementQuantity = (item, index) => {
+    console.log("atempt to dec item from cart>>", item);
+    const body = { quantity: item.quantity - 1 };
+    api
+      .put(`/cart/item/update/${item.id}/`, body)
+      .then((res) => {
+        console.log("dec item succesfull!\nres >>> ", res);
+        const respo = dispatch(decrementItem(index));
+        console.log(respo);
+      })
+      .catch((err) => {
+        console.log("dec item failed!\n err >>> ", err);
       });
   };
   return (
@@ -72,7 +101,8 @@ export default function CartList() {
                       shape="circle"
                       size="large"
                       icon={<MinusCircleFilled />}
-                      onClick={() => dispatch(decrementItem(index))}
+                      onClick={() => decrementQuantity(item, index)}
+                      disabled={item.quantity <= 1}
                     />
                   </Tooltip>,
                   <span>{item.quantity}</span>,
@@ -83,7 +113,7 @@ export default function CartList() {
                       shape="circle"
                       icon={<PlusCircleFilled />}
                       size="large"
-                      onClick={() => dispatch(incrementItem(index))}
+                      onClick={() => incrementQuantity(item, index)}
                     />
                   </Tooltip>,
                   <Tooltip title="delete">
@@ -109,8 +139,10 @@ export default function CartList() {
             )}
           />
           <Space>
-            <h5 className="fw-bold">Total Price:</h5>
-            <h5 className="fw-normal">{totalPrice} &dollar;</h5>
+            <h5 style={{ color: "#59ab6e" }} className="fw-bold">
+              Total Price:
+            </h5>
+            <h5 className="fw-normal">{totalPrice} &#8364;</h5>
           </Space>
         </>
       )}
