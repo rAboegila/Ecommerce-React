@@ -61,7 +61,6 @@ export default function ProductCard({ product, isLoading }) {
             product.size = choosenSize;
             product.color = choosenColor;
             const response = addToCart();
-            console.log("disptach reponse ", response);
 
             if (response) {
               setModalOpen(false);
@@ -72,9 +71,16 @@ export default function ProductCard({ product, isLoading }) {
           } else {
             // setInStock(false);
             setErrMsg("We are sorry! Product out of stock :(");
+            setConfirmModalLoading(false);
 
             setError(true);
           }
+        })
+        .catch((err) => {
+          setConfirmModalLoading(false);
+
+          setError(true);
+          setErrMsg(err.response.data.error);
         });
       setChoosenColor("");
       setChoosenSize("");
@@ -101,7 +107,8 @@ export default function ProductCard({ product, isLoading }) {
     api
       .post(`/cart/item/create/${product.id}/`, itemData)
       .then((res) => {
-        dispatch(addItem(product));
+        console.log(res);
+        dispatch(addItem(res.data.data));
         setModalOpen(false);
         // setInStock(true);
         setError(false);

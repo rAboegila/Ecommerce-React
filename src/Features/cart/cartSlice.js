@@ -10,7 +10,7 @@ const initialState = {
 };
 
 const getIndex = (array, itemToFind) => {
-  array.findIndex((item) => item.id === itemToFind.id);
+  return array.findIndex((item) => item.id === itemToFind.id);
 };
 const popItem = (array, index) => {
   array.splice(index, 1);
@@ -19,19 +19,27 @@ const popItem = (array, index) => {
 const addItemReducer = (state, action) => {
   console.log("product in dispatch >>> ", action.payload);
   state.cartItems.push(action.payload);
-  state.price += action.payload.price;
+  state.price += Number(action.payload.price);
 };
 
 const removeItemReducer = (state, action) => {
   const index = getIndex(state.cartItems, action.payload);
   popItem(state.cartItems, index);
-  state.price -= action.payload.price;
+  state.price -= Number(action.payload.price) * Number(action.payload.quantity);
 };
 const incrementItemReducer = (state, action) => {
-  state.cartItems[action.payload].quantity++;
+  const index = getIndex(state.cartItems, action.payload);
+  console.log(index);
+
+  state.cartItems[index].quantity++;
+  state.price += Number(state.cartItems[index].price);
 };
 const decrementItemReducer = (state, action) => {
-  state.cartItems[action.payload].quantity--;
+  console.log(action.payload);
+  const index = getIndex(state.cartItems, action.payload);
+  console.log(index);
+  state.cartItems[index].quantity--;
+  state.price -= Number(state.cartItems[index].price);
 };
 const openCartDrawer = (state) => {
   state.isOpen = true;

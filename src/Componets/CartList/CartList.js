@@ -59,11 +59,12 @@ export default function CartList() {
       .put(`/cart/item/update/${item.id}/`, body)
       .then((res) => {
         console.log("inc item  succesfull!\nres >>> ", res);
-        const respo = dispatch(incrementItem(index));
+        const respo = dispatch(incrementItem(item));
         console.log(respo);
       })
       .catch((err) => {
         console.log("inc item failed!\n err >>> ", err);
+        /////Add Alert message and disable add button
       });
   };
   const decrementQuantity = (item, index) => {
@@ -73,7 +74,7 @@ export default function CartList() {
       .put(`/cart/item/update/${item.id}/`, body)
       .then((res) => {
         console.log("dec item succesfull!\nres >>> ", res);
-        const respo = dispatch(decrementItem(index));
+        const respo = dispatch(decrementItem(item));
         console.log(respo);
       })
       .catch((err) => {
