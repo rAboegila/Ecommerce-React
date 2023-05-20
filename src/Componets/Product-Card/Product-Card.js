@@ -27,7 +27,10 @@ export default function ProductCard({ product, isLoading }) {
   const [choosenColor, setChoosenColor] = useState("");
   const [confirmModalLoading, setConfirmModalLoading] = useState(false);
   const [inStock, setInStock] = useState(true);
+  const [errMsg, setErrMsg] = useState("All Good");
+
   const [disable, setDisable] = useState(false);
+  const [err, setError] = useState(false);
   const showModal = () => {
     setModalOpen(true);
   };
@@ -42,35 +45,51 @@ export default function ProductCard({ product, isLoading }) {
   //   };
   // }
   const handleOk = () => {
-    setConfirmModalLoading(true);
-    console.log("current size", choosenSize, "\ncurrent color", choosenColor);
-    const res = api
-      .get(
-        `/product/${product.id}/inventory/${choosenColor}/${choosenSize}/quantity/`
-      )
-      .then((res) => {
-        setConfirmModalLoading(false);
+    if (!disable) {
+      setConfirmModalLoading(true);
+      api
+        .get(
+          `/product/${product.id}/inventory/${reverseFormattedColor(
+            choosenColor
+          )}/${reverseFormattedSize(choosenSize)}/quantity/`
+        )
+        .then((res) => {
+          setConfirmModalLoading(false);
 
-        if (res.data.quantity > 0) {
-          product.stock = res.data.quantity;
-          product.size = choosenSize;
-          product.color = choosenColor;
-          addToCart();
-          setModalOpen(false);
-          setInStock(true);
-        } else {
-          setInStock(false);
-        }
-      });
-    setChoosenColor("");
-    setChoosenSize("");
+          if (res.data.quantity > 0) {
+            product.stock = res.data.quantity;
+            product.size = choosenSize;
+            product.color = choosenColor;
+            const response = addToCart();
+            console.log("disptach reponse ", response);
+
+            if (response) {
+              setModalOpen(false);
+              // setInStock(true);
+              setError(false);
+              setErrMsg("All Good!");
+            }
+          } else {
+            // setInStock(false);
+            setErrMsg("We are sorry! Product out of stock :(");
+
+            setError(true);
+          }
+        });
+      setChoosenColor("");
+      setChoosenSize("");
+    }
   };
   const handleCancel = () => {
     console.log("Clicked cancel button");
     setChoosenColor("");
     setChoosenSize("");
     setModalOpen(false);
-    setInStock(true);
+    // setInStock(true);
+    setError(false);
+    setErrMsg("All Good!");
+
+    setConfirmModalLoading(false);
   };
   const addToCart = () => {
     console.log("atempt to add to cart>>", product);
@@ -82,11 +101,16 @@ export default function ProductCard({ product, isLoading }) {
     api
       .post(`/cart/item/create/${product.id}/`, itemData)
       .then((res) => {
-        console.log("add to cart succesfull!\nres >>> ", res);
         dispatch(addItem(product));
+        setModalOpen(false);
+        // setInStock(true);
+        setError(false);
+        setErrMsg("All Good!");
       })
       .catch((err) => {
         console.log("add to cart failed!\n err >>> ", err);
+        setError(true);
+        setErrMsg(err.response.data.error);
       });
   };
 
@@ -114,12 +138,14 @@ export default function ProductCard({ product, isLoading }) {
 
   const onColorChange = ({ target: { value } }) => {
     console.log("Change Color");
-    setInStock(true);
+    // setInStock(true);
+    setError(false);
     console.log("color choosen", value);
     setChoosenColor(value);
   };
   const onSizeChange = ({ target: { value } }) => {
-    setInStock(true);
+    // setInStock(true);
+    setError(false);
     console.log("size choosen", value);
     setChoosenSize(value);
   };
@@ -164,13 +190,8 @@ export default function ProductCard({ product, isLoading }) {
         }}
       >
         <Space direction="vertical" size="middle">
-          {!inStock && (
-            <Alert
-              message="Error"
-              description="We are sorry! Product out of stock :("
-              type="error"
-              showIcon
-            />
+          {err && (
+            <Alert message="Error" description={errMsg} type="error" showIcon />
           )}
           <Radio.Group
             options={colors}

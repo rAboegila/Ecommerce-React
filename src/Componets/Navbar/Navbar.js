@@ -128,6 +128,7 @@ export default function Navbar() {
               </span> */}
             </NavLink>
           </div>
+
           {isAdmin && (
             <Link
               className="mx-1"
