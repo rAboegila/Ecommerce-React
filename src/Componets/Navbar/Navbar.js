@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 //Redux
-import { openCart, getNumItems } from "../../Features/cart/cartSlice";
+import {
+  openCart,
+  getNumItems,
+  fetchCartItems,
+} from "../../Features/cart/cartSlice";
 
 //Components
 import Cart from "../Cart/Cart";
@@ -15,14 +19,22 @@ import "./Navbar.css";
 export default function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const cartLength = useSelector(getNumItems);
   console.log(cartLength);
   const showDrawer = () => {
     dispatch(openCart());
   };
-  const isAdmin = useSelector(state=>state.user.is_admin);
+  const isAdmin = useSelector((state) => state.user.is_admin);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const [fetched, setFetched] = useState(false);
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(fetchCartItems());
+      console.log("numberOfItems  ", cartLength);
+    }
+  }, []);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light shadow">
@@ -74,7 +86,6 @@ export default function Navbar() {
               </li>
             </ul>
           </div>
-          
 
           <div className="navbar align-self-center d-flex">
             <div className="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
@@ -116,15 +127,37 @@ export default function Navbar() {
                 +99
               </span> */}
             </NavLink>
-            
           </div>
-            {isAdmin && <Link className="mx-1" style={{textDecoration: 'none'}} to={'/admin'} >Adminnn</Link>}
+          {isAdmin && (
+            <Link
+              className="mx-1"
+              style={{ textDecoration: "none" }}
+              to={"/admin"}
+            >
+              Adminnn
+            </Link>
+          )}
 
-            {!isLoggedIn && !isAdmin ? (
+          {!isLoggedIn && !isAdmin ? (
             <>
-            <Link className="mx-1 btn btn-primary" style={{textDecoration: 'none'}} to={'/login'} >Login</Link>  <Link className="mx-1 btn btn-primary" style={{textDecoration: 'none'}} to={'/register'} >Register</Link>
+              <Link
+                className="mx-1 btn btn-primary"
+                style={{ textDecoration: "none" }}
+                to={"/login"}
+              >
+                Login
+              </Link>{" "}
+              <Link
+                className="mx-1 btn btn-primary"
+                style={{ textDecoration: "none" }}
+                to={"/register"}
+              >
+                Register
+              </Link>
             </>
-            ) : ""}
+          ) : (
+            ""
+          )}
         </div>
       </div>
 

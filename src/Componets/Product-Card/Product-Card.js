@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Card, Modal, Radio, Space, Error, Alert } from "antd";
+import { Card, Modal, Radio, Space, Error, Alert, Button } from "antd";
 import { HeartOutlined, HeartFilled, ShopFilled } from "@ant-design/icons";
 
 import api from "../../Lib/axios";
 
-import { addItem } from "../../Features/cart/cartSlice";
+import { addItem, addProduct } from "../../Features/cart/cartSlice";
+
+import {
+  formatSize,
+  formatColor,
+  reverseFormattedColor,
+  reverseFormattedSize,
+} from "../../Lib/StringFormat";
 
 import "./Product-Card.css";
 
@@ -20,9 +27,20 @@ export default function ProductCard({ product, isLoading }) {
   const [choosenColor, setChoosenColor] = useState("");
   const [confirmModalLoading, setConfirmModalLoading] = useState(false);
   const [inStock, setInStock] = useState(true);
+  const [disable, setDisable] = useState(false);
   const showModal = () => {
     setModalOpen(true);
   };
+
+  // function formatMetadata(color, size) {
+  //   return { color: formatColor(color), size: formatSize(size) };
+  // }
+  // function unformatMetadata(color, size) {
+  //   return {
+  //     color: reverseFormattedColor(color),
+  //     size: reverseFormattedSize(size),
+  //   };
+  // }
   const handleOk = () => {
     setConfirmModalLoading(true);
     console.log("current size", choosenSize, "\ncurrent color", choosenColor);
@@ -34,7 +52,7 @@ export default function ProductCard({ product, isLoading }) {
         setConfirmModalLoading(false);
 
         if (res.data.quantity > 0) {
-          product.quantity = res.data.quantity;
+          product.stock = res.data.quantity;
           product.size = choosenSize;
           product.color = choosenColor;
           addToCart();
@@ -44,30 +62,58 @@ export default function ProductCard({ product, isLoading }) {
           setInStock(false);
         }
       });
+    setChoosenColor("");
+    setChoosenSize("");
   };
   const handleCancel = () => {
     console.log("Clicked cancel button");
+    setChoosenColor("");
+    setChoosenSize("");
     setModalOpen(false);
     setInStock(true);
   };
   const addToCart = () => {
     console.log("atempt to add to cart>>", product);
-    dispatch(addItem(product));
+    const itemData = {
+      color: reverseFormattedColor(choosenColor),
+      size: reverseFormattedSize(choosenSize),
+      quantity: 1,
+    };
+    api
+      .post(`/cart/item/create/${product.id}/`, itemData)
+      .then((res) => {
+        console.log("add to cart succesfull!\nres >>> ", res);
+        dispatch(addItem(product));
+      })
+      .catch((err) => {
+        console.log("add to cart failed!\n err >>> ", err);
+      });
   };
 
   useEffect(() => {
-    api.get(`/product/${product.id}/inventory/colors/`).then((res) => {
-      setColors(res.data.colors);
-    });
-  }, [colors]);
+    if (modalOpen) {
+      if (choosenColor === "" && choosenSize === "") {
+        setDisable(true);
+      } else if (choosenColor !== "" && choosenSize !== "") setDisable(false);
+    }
+  });
 
   useEffect(() => {
-    api.get(`/product/${product.id}/inventory/sizes/`).then((res) => {
-      setSizes(res.data.sizes);
+    api.get(`/product/${product.id}/inventory/colors/`).then((res) => {
+      const preFormation = res.data.colors;
+
+      setColors(preFormation.map((color) => formatColor(color)));
     });
-  }, [sizes]);
+    api.get(`/product/${product.id}/inventory/sizes/`).then((res) => {
+      {
+        const preFormation = res.data.sizes;
+        setSizes(preFormation.map((size) => formatSize(size)));
+      }
+    });
+  }, []);
 
   const onColorChange = ({ target: { value } }) => {
+    console.log("Change Color");
     setInStock(true);
     console.log("color choosen", value);
     setChoosenColor(value);
@@ -113,12 +159,15 @@ export default function ProductCard({ product, isLoading }) {
         confirmLoading={confirmModalLoading}
         onCancel={handleCancel}
         key={`${product.id}-${product.name}-wishlist`}
+        okButtonProps={{
+          disabled: disable,
+        }}
       >
         <Space direction="vertical" size="middle">
           {!inStock && (
             <Alert
               message="Error"
-              description="This is an error message about copywriting."
+              description="We are sorry! Product out of stock :("
               type="error"
               showIcon
             />

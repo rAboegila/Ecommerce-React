@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Spin, Card, Row, Col, Breadcrumb, Layout, Menu, Button } from "antd";
-// import { HeartOutlined, HeartFilled, ShopFilled } from "@ant-design/icons";
+import { SmileTwoTone } from "@ant-design/icons";
 
 import api from "../../Lib/axios";
 
@@ -14,7 +14,7 @@ export default function Products() {
   const [items, setItems] = useState([]);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-
+  const [emptyState, setEmptyState] = useState(false);
   const { Meta } = Card;
   const { Content, Sider } = Layout;
 
@@ -26,10 +26,15 @@ export default function Products() {
       label: (
         <Link
           onClick={() => {
-            const output = filteredProducts.filter(
-              (product) => product.parent_category === name
-            );
-            setFilteredProducts(output);
+            api.get(`/category/${id}/products/`).then((res) => {
+              console.log(res.data);
+              setFilteredProducts(res.data);
+            });
+            if (filteredProducts.length == 0) {
+              setEmptyState(true);
+            } else if (filteredProducts.length >= 0) setEmptyState(false);
+
+            console.log(filteredProducts.length, "-", emptyState);
           }}
           style={{
             textDecoration: "none",
@@ -42,18 +47,23 @@ export default function Products() {
       ),
     };
   }
-  function getChildItem(label, id, children) {
-    const key = "SubID" + id;
+  function getChildItem(label, preKey, children, id) {
+    const key = "SubID" + preKey;
     return {
       key,
       children,
       label: (
         <Link
           onClick={() => {
-            const output = filteredProducts.filter(
-              (product) => product.subcategory === label
-            );
-            setFilteredProducts(output);
+            api.get(`/subcategory/${id}/products/`).then((res) => {
+              console.log(res.data);
+              setFilteredProducts(res.data);
+              if (filteredProducts.length == 0) {
+                setEmptyState(true);
+              } else if (filteredProducts.length >= 0) setEmptyState(false);
+
+              console.log(filteredProducts.length, "-", emptyState);
+            });
           }}
           style={{
             textDecoration: "none",
@@ -78,16 +88,22 @@ export default function Products() {
         setItems(
           myData.map((cat) => {
             const children = cat.subcategories.map((child) =>
-              getChildItem(child.name, cat.name + "-" + child.name)
+              getChildItem(
+                child.name,
+                cat.name + "-" + child.name,
+                [],
+                child.id
+              )
             );
 
             return getItem(cat.name, cat.id, children);
           })
         );
       })
-
       .catch((err) => console.error(err))
-      .finally(() => {});
+      .finally(() => {
+        setLoading(false);
+      });
 
     api
       .get("product/list/")
@@ -95,10 +111,10 @@ export default function Products() {
         setProducts(res.data);
         setFilteredProducts(res.data);
       })
-
       .catch((err) => console.error(err))
-
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const displayProducts = () => {
@@ -166,21 +182,34 @@ export default function Products() {
                 style={{ textTransform: "capitalize" }}
               />
             </Sider>
-            <Layout className="site-layout">
-              <Content
-                style={{
-                  margin: "0 16px",
-                }}
-              >
-                <Row
-                  className="mx-auto"
-                  style={{ paddingTop: 50, paddingBottom: 50 }}
-                  gutter={[16, { xs: 4, sm: 8, md: 16, lg: 24 }]}
-                >
-                  {displayProducts()}
-                </Row>
-              </Content>
-            </Layout>
+            {emptyState ? (
+              <div id="message">
+                <h1 style={{ marginRight: 5 }} className="msg-content">
+                  No Products Yet! Stay Tuned{" "}
+                </h1>
+                <h3 className="msg-content">
+                  <SmileTwoTone twoToneColor="#59ab6e" />
+                </h3>
+              </div>
+            ) : (
+              <>
+                <Layout className="site-layout">
+                  <Content
+                    style={{
+                      margin: "0 16px",
+                    }}
+                  >
+                    <Row
+                      className="mx-auto"
+                      style={{ paddingTop: 50, paddingBottom: 50 }}
+                      gutter={[16, { xs: 4, sm: 8, md: 16, lg: 24 }]}
+                    >
+                      {displayProducts()}
+                    </Row>
+                  </Content>
+                </Layout>
+              </>
+            )}
           </Layout>
         </>
       )}
