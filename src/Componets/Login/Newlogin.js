@@ -112,12 +112,12 @@ function Login() {
 
       console.log("login response", response);
 
-      if (!response.data.data.token) {
+      if (!response.data.token) {
         console.log(response.data);
       }
 
-      localStorage.setItem("token", response.data.data.token);
-      console.log(response.data.data.token);
+      localStorage.setItem("token", response.data.token);
+      console.log(response.data.token);
       console.log("Login Successfully");
       navigate("/");
       dispatch(login()); // Dispatch the login action

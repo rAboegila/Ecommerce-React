@@ -14,8 +14,9 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const cartLength = useSelector(getNumItems);
   console.log(cartLength);
-  const showDrawer = () => {
+  const showDrawer = (e) => {
     dispatch(openCart());
+    console.log(e.target.textContent);
   };
 
   return (
@@ -84,7 +85,6 @@ export default function Navbar() {
             </div>
             <NavLink
               className="nav-icon d-none d-lg-inline"
-              href="#"
               data-bs-toggle="modal"
               data-bs-target="#templatemo_search"
             >
@@ -101,7 +101,7 @@ export default function Navbar() {
             </NavLink>
             <NavLink
               className="nav-icon position-relative text-decoration-none"
-              href="#"
+              to="/user"
             >
               <i className="fa fa-fw fa-user text-dark mr-3"></i>
               {/* <span className="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
