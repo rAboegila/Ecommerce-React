@@ -2,6 +2,7 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../../Features/auth/authSlice";
 
 //Redux
 import { openCart, getNumItems } from "../../Features/cart/cartSlice";
@@ -13,6 +14,15 @@ import Cart from "../Cart/Cart";
 import "./Navbar.css";
 
 export default function Navbar() {
+
+      const onLogOut = ()=>{
+      localStorage.removeItem("token");
+      localStorage.removeItem("token_admin");
+      dispatch(logout())
+      navigate("/login");
+  }
+  
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cartLength = useSelector(getNumItems);
@@ -50,7 +60,8 @@ export default function Navbar() {
           className="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between"
           id="templatemo_main_nav"
         >
-          <div className="flex-fill">
+
+          {!isAdmin ? <div className="flex-fill">
             <ul className="nav navbar-nav d-flex justify-content-between mx-lg-auto">
               <li className="nav-item">
                 <NavLink className="nav-link" to="/">
@@ -73,10 +84,10 @@ export default function Navbar() {
                 </NavLink>
               </li>
             </ul>
-          </div>
+          </div> : ''}
           
-
-          <div className="navbar align-self-center d-flex">
+          
+        {!isAdmin ?  <div className="navbar align-self-center d-flex">
             <div className="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
               <div className="input-group">
                 <input
@@ -117,14 +128,19 @@ export default function Navbar() {
               </span> */}
             </NavLink>
             
-          </div>
-            {isAdmin && <Link className="mx-1" style={{textDecoration: 'none'}} to={'/admin'} >Adminnn</Link>}
+          </div> : ''}
+         
+            {isAdmin && <Link className="mx-3 btn btn-info" style={{textDecoration: 'none'}} to={'/admin'} >Admin</Link>}
 
             {!isLoggedIn && !isAdmin ? (
             <>
             <Link className="mx-1 btn btn-primary" style={{textDecoration: 'none'}} to={'/login'} >Login</Link>  <Link className="mx-1 btn btn-primary" style={{textDecoration: 'none'}} to={'/register'} >Register</Link>
             </>
             ) : ""}
+
+              {isLoggedIn || isAdmin ?  <button className="btn btn-primary" onClick={onLogOut}>LOGOUT</button> : ''}
+
+
         </div>
       </div>
 

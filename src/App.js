@@ -21,6 +21,21 @@ import Newlogin from './Componets/Login/Newlogin';
 import Admin from "./Admin/Admin/Admin";
 import ProtectedRoutes from "./Lib/ProtectedRoutes";
 import ProtectedUserRoutes from "./Lib/ProtectedUserRoute";
+import CategoryList from "./Admin/Categories/CategoryList";
+import AddCategory from "./Admin/Categories/AddCategory";
+import CategoryCard from "./Componets/Category-Card/Category-Card";
+import EditCategory from "./Admin/Categories/EditCategory";
+import SubCategoryList from "./Admin/SubCategories/SubCategoriesList";
+import AddSubCategory from "./Admin/SubCategories/AddSubCategory";
+import SubCategoryCard from "./Admin/SubCategories/SubCategory-Card";
+import EditSubCategory from "./Admin/SubCategories/EditSubCategory";
+import UsersList from "./Admin/Users/Users";
+import EditUserStatus from "./Admin/Users/EditUser";
+import OrdersList from "./Admin/Orders/Orders";
+import EditOrders from "./Admin/Orders/EditOrders";
+import Inventory from "./Componets/Inventory/Inventory";
+import AddInventory from "./Componets/Inventory/AddInventory";
+import EditInventory from "./Componets/Inventory/EditInventory";
 
 
 export default function App() {
@@ -36,29 +51,47 @@ export default function App() {
               <Route path="products/add" element={<AddProduct />} />
               <Route path="/product/update/:productId" element={<EditProduct />} />
               <Route path="/admin" element={<Admin />} />
+              <Route exact path="product/:productId/" element={<ProductDetails />} />
+              <Route path="/categories" element={<CategoryList />} />
+              <Route path="/category/add" element={<AddCategory/>} />
+              <Route path="/category/:categoryId" element={<CategoryCard />} />
+              <Route path="/category/update/:categoryId" element={<EditCategory />} />
+              <Route path="/subcategories" element={<SubCategoryList />} />
+              <Route path="/subcategory/add" element={<AddSubCategory/>} />
+              <Route path="/subcategory/:subcategoryId" element={<SubCategoryCard />} />
+              <Route path="/subcategory/update/:subcategoryId" element={<EditSubCategory />} />
+              <Route path="/users" element={<UsersList />} />
+              <Route path="/account/:userId/change-active" element={<EditUserStatus />} />
+              <Route path="/orders" element={<OrdersList />} />
+              <Route path="/order/updateStatus/:orderId" element={<EditOrders />} />
+              <Route path="/inventories" element={<Inventory />} />
+              <Route path="/inventory/add" element={<AddInventory />} />
+              <Route path="/product/:productId/update_inventory/:inventoryId" element={<EditInventory />} />
 
           </Route>
 
           <Route
             element={<ProtectedUserRoutes requiresLogin={true} redirectTo="/login" />}
           >
+            <Route exact path="product/:productId/" element={<ProductDetails />} />
+            <Route path="/products" element={<Products />} />
 
-          <Route exact path="product/:productId/" element={<ProductDetails />} />
-              <Route path="/products" element={<Products />} />
           </Route>
 
 
           <Route
             element={<ProtectedUserRoutes requiresLogin={false} redirectTo="/" />}
           >
-
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Newlogin />} />
           </Route>
 
           
 
+          <Route path="/category/:categoryId" element={<CategoryCard />} />
+              
               <Route path='/' element={<Home />} />
+
       </Routes>
     
   <Footer />

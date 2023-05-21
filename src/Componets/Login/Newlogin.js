@@ -6,18 +6,24 @@ import { login } from "../../Features/auth/authSlice";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { setIsAdmin } from '../../Lib/IsAdmin';
+import axios from "axios";
+import {notification } from "antd";
+
+
+
 
 function Login() {
+
+  const [antApi, contextHolder] = notification.useNotification();
+  const openNotification = (Msg) => {
+    antApi.info({
+      message: Msg,
+      placement: 'top',
+    });
+  };
+
+
   const navigate = useNavigate();
-
-  // ONLOGOUTBUTTON
-  //     const dispatch = useDispatch();
-
-  //   const onLogOut = ()=>{
-  //     localStorage.removeItem("token");
-  //     dispatch(logout())
-  //     navigate("/login");
-  // }
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,38 +39,41 @@ function Login() {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await api.post("/account/login/", {
+      const response = await axios.post("https://ecommerce-django-ct3k.onrender.com/account/login/", {
         email: email,
         password: password,
       });
 
       console.log("login response", response);
 
-      if (!response.data.data.token) {
-        console.log(response.data);
+      if (!response.data.token) {
+        console.log(response);
       }
 
-      if(response.data.data.is_admin){
-      localStorage.setItem("token_admin", response.data.data.token);
-      dispatch(setIsAdmin(response.data.data.is_admin));
+      if(response.data.is_admin){
+      localStorage.setItem("token_admin", response.data.token);
+      dispatch(setIsAdmin(response.data.is_admin));
       navigate("/admin")
       }else {
-        localStorage.setItem("token", response.data.data.token);
-        console.log(response.data.data.token);
-        console.log(response.data.data);
+        localStorage.setItem("token", response.data.token);
+        console.log(response.data.token);
+        console.log(response.data);
         console.log("Login Successfully");
         dispatch(login()); // Dispatch the login action
         navigate("/");
 
       }
-      console.log(response.data.data.is_admin);
+      console.log(response.data.is_admin);
     } catch (error) {
       console.error(error);
+      openNotification('Email or password is invalid')
     }
   };
 
   return (
+
     <div className='container mt-5 mb-5'>
+      {contextHolder}
        <div className='text-center'>SIGN UP</div>
        <Form onSubmit={handleLogin}>
     
@@ -81,30 +90,11 @@ function Login() {
            <Form.Control type="password" value={password} placeholder="Password" onChange={(event) => setPassword(event.target.value)} required/>
          </Form.Group>
          <Button variant="primary" type="submit">
-           Submit
+           Log in
          </Button>
        </Form>
      </div>
   );
 }
 
-
-// <form onSubmit={handleLogin}>
-//       <input
-//         type="email"
-//         placeholder="Email"
-//         value={email}
-//         onChange={(event) => setEmail(event.target.value)}
-//       />
-//       <input
-//         type="password"
-//         placeholder="Password"
-//         value={password}
-//         onChange={(event) => setPassword(event.target.value)}
-//       />
-//       <button type="submit" disabled={isLoading}>
-//         {isLoading ? "Logging in..." : "Login"}
-//       </button>
-//       {error && <p>{error}</p>}
-//     </form>
 export default Login;
