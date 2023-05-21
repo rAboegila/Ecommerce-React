@@ -39,9 +39,8 @@ import Inventory from "./Componets/Inventory/Inventory";
 import AddInventory from "./Componets/Inventory/AddInventory";
 import EditInventory from "./Componets/Inventory/EditInventory";
 import Details from "./Pages/User/UserDetails";
+c;
 import Orders from "./Pages/User/UserOrders";
-import EditProduct from "./Admin/Edit Product/EditProduct";
-import Newlogin from "./Componets/Login/Newlogin";
 import Checkout from "./Pages/Checkout/Checkout";
 import CheckSucces from "./Pages/Checkout/CheckSucces";
 
