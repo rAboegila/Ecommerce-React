@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-
+import User from "./Pages/User/User";
 import "./App.css";
 
 //Pages
@@ -38,6 +38,12 @@ import EditOrders from "./Admin/Orders/EditOrders";
 import Inventory from "./Componets/Inventory/Inventory";
 import AddInventory from "./Componets/Inventory/AddInventory";
 import EditInventory from "./Componets/Inventory/EditInventory";
+import Details from "./Pages/User/UserDetails";
+import Orders from "./Pages/User/UserOrders";
+import EditProduct from "./Admin/Edit Product/EditProduct";
+import Newlogin from "./Componets/Login/Newlogin";
+import Checkout from "./Pages/Checkout/Checkout";
+import CheckSucces from "./Pages/Checkout/CheckSucces";
 
 export default function App() {
   return (
@@ -98,6 +104,12 @@ export default function App() {
             path="product/:productId/"
             element={<ProductDetails />}
           />
+          <Route path="/user" element={<User />}>
+            <Route path="details" element={<Details />} />
+            <Route path="" element={<Orders />} />
+          </Route>
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout/success" element={<CheckSucces />} />
           <Route path="/products" element={<Products />} />
           <Route path="/wishlist" element={<WishList />} />
         </Route>
@@ -109,9 +121,7 @@ export default function App() {
           <Route path="/login" element={<Newlogin />} />
         </Route>
 
-        <Route path="/about" element={<About />}>
-          {" "}
-        </Route>
+        <Route path="/about" element={<About />}></Route>
         <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

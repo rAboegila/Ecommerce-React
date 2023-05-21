@@ -1,0 +1,27 @@
+FORM{
+    padding: 10px;
+}
+
+.error{
+    color: rgb(177, 28, 28);
+    background-color: rgb(255, 0,0,0.1);
+    font-family:'Roboto',sans-serif;
+    padding: 2px;
+    border-radius: 0 0 5px 5px;
+}
+
+.order{
+    margin: 20px;
+}
+.order-pending{
+    background-color: rgb(255, 193, 7,0.5);
+}
+
+.order-shipped{
+    background-color: rgb(25,135,84,0.5);
+}
+
+.order-delivered{
+    background-color: rgb(225,226,228,0.5);
+}
+
