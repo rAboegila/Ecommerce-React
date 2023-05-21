@@ -19,23 +19,17 @@ import {
   getPrice,
 } from "../../Features/cart/cartSlice";
 
-import {
-  formatSize,
-  formatColor,
-  reverseFormattedColor,
-  reverseFormattedSize,
-} from "../../Lib/StringFormat";
+import { formatSize, formatColor } from "../../Lib/StringFormat";
 
 export default function CartList() {
   const [isLoading, setLoading] = useState(useSelector(getLoading));
   const cartItems = useSelector(getCartItems);
   const dispatch = useDispatch();
-  const addDisable = (item) => {};
-  const removeDisable = (item) => {};
-  const token = useSelector(getToken);
   const totalPrice = useSelector(getPrice);
+
   useEffect(() => {
     const data = dispatch(fetchCartItems());
+    console.log(cartItems);
   }, []);
 
   const removeFromCart = (item) => {
@@ -115,6 +109,7 @@ export default function CartList() {
                       icon={<PlusCircleFilled />}
                       size="large"
                       onClick={() => incrementQuantity(item, index)}
+                      disabled={item.stock <= item.quantity}
                     />
                   </Tooltip>,
                   <Tooltip title="delete">
