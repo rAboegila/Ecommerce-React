@@ -1,0 +1,44 @@
+.product-image {
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .product-name {
+    font-size: 36px;
+    margin-top: 32px;
+  }
+  
+  .product-category {
+    font-size: 24px;
+    margin-top: 16px;
+    color: #777;
+  }
+  
+  .product-subcategory {
+    font-size: 24px;
+    margin-top: 8px;
+    color: #777;
+  }
+  
+  .product-price {
+    font-size: 36px;
+    font-weight: bold;
+    margin-top: 32px;
+  }
+  
+  .product-description {
+    font-size: 18px;
+    margin-top: 16px;
+    line-height: 1.5em;
+  }
+  
+  .btn-info {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .btn-info:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+  }

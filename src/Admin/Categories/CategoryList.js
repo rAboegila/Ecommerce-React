@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo  } from "react";
+import { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
@@ -9,97 +9,83 @@ import { selectIsAdmin } from '../../Lib/IsAdmin';
 import api from "../../Lib/axios";
 import axios from "axios";
 
-let PageSize = 10;
 
-function AdminProducts() {
-
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * PageSize;
-    const lastPageIndex = firstPageIndex + PageSize;
-    return products.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage]);
+function CategoryList() {
   // const isAdmin = useSelector(selectIsAdmin);
   const navigate = useNavigate();
   const token = localStorage.getItem("token_admin");
 
 
-  const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState([]);
+
   useEffect(() => {
-    getAllProducts();
+    getAllCategories();
   }, []);
 
-  const getAllProducts = () => {
-    fetch("https://ecommerce-django-ct3k.onrender.com/product/list/")
+  const getAllCategories = () => {
+    fetch("https://ecommerce-django-ct3k.onrender.com/category/list/")
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        setProducts(data);
+        setCategory(data);
       });
   };
 
-  const deleteProduct = (product) => {
+  const deleteCategory = (category) => {
     Swal.fire({
-      title: `Are you sure to delete ${product.name}?`,
+      title: `Are you sure to delete ${category.name}?`,
       showCancelButton: true,
     }).then( async(data) => {
       if (data.isConfirmed) {
-       await axios.delete(`https://ecommerce-django-ct3k.onrender.com/product/delete/${product.id}/`, {
+       await axios.delete(`https://ecommerce-django-ct3k.onrender.com/category/delete/${category.id}/`, {
         headers:{
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
       }
        })
-          getAllProducts();
+          getAllCategories();
       }
     });
   };
 
   return (
     <>
-      <h1>Admin Page</h1>
-      <Link to={"/products/add"} className="btn btn-success mt-3">
-        Add new product
+      <h1>Categories Page</h1>
+      <Link to={"/category/add"} className="btn btn-success mt-3">
+        Add new Category
       </Link>
       <table className="table table-striped mt-5">
         <thead>
           <tr>
             <th>ID</th>
             <th>Title</th>
-            <th>Price</th>
-            <th>Image</th>
             <th>Operations</th>
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => {
+          {category.map((categories) => {
             return (
-              <tr key={product.id}>
-                <td>{product.id}</td>
-                <td>{product.name}</td>
-                <td>{product.price}$</td>
-                <td>
-                  <img className="productImg" src={product.imageUrl} />
-                </td>
+              <tr key={categories.id}>
+                <td>{categories.id}</td>
+                <td>{categories.name}</td>
                 <td>
                   <button
                     className="btn btn-danger btn-sm"
                     style={{backgroundColor: 'red'}}
                     onClick={() => {
-                      deleteProduct(product);
+                      deleteCategory(categories);
                     }}
                   >
                     Delete
                   </button>
                   <Link
-                    to={`/product/${product.id}/`}
+                    to={`/category/${categories.id}/`}
                     className="btn btn-info btn-sm"
                   >
                     View
                   </Link>
                   <Link
-                    to={`/product/update/${product.id}/`}
+                    to={`/category/update/${categories.id}/`}
                     className="btn btn-primary btn-sm"
                   >
                     Edit
@@ -114,4 +100,4 @@ function AdminProducts() {
   );
 }
 
-export default AdminProducts;
+export default CategoryList;

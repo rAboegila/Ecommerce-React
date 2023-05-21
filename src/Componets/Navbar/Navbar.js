@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../../Features/auth/authSlice";
 
 //Redux
 import {
@@ -21,6 +22,13 @@ import Cart from "../Cart/Cart";
 import "./Navbar.css";
 
 export default function Navbar() {
+  const onLogOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("token_admin");
+    dispatch(logout());
+    navigate("/login");
+  };
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -66,53 +74,68 @@ export default function Navbar() {
           className="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between"
           id="templatemo_main_nav"
         >
-          <div className="flex-fill">
-            <ul className="nav navbar-nav d-flex justify-content-between mx-lg-auto">
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/">
-                  Home
+          {!isAdmin ? (
+            <>
+              <div className="flex-fill">
+                <ul className="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/">
+                      Home
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" href="#">
+                      About
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/products">
+                      Shop
+                    </NavLink>
+                  </li>
+                </ul>
+              </div>
+              <div className="navbar align-self-center d-flex">
+                <NavLink
+                  className="nav-icon position-relative text-decoration-none"
+                  onClick={showDrawer}
+                >
+                  <i className="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+                  <span className="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
+                    {cartLength}
+                  </span>
                 </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" href="#">
-                  About
+                <NavLink
+                  className="nav-icon position-relative text-decoration-none"
+                  to="/wishlist"
+                >
+                  <i className="fa fa-fw fa-heart text-dark mr-1"></i>
+                  <span className="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
+                    {wishLength}
+                  </span>
                 </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/products">
-                  Shop
-                </NavLink>
-              </li>
-            </ul>
-          </div>
 
-          <div className="navbar align-self-center d-flex">
-            <NavLink
-              className="nav-icon position-relative text-decoration-none"
-              onClick={showDrawer}
-            >
-              <i className="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
-              <span className="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
-                {cartLength}
-              </span>
-            </NavLink>
-            <NavLink
-              className="nav-icon position-relative text-decoration-none"
-              to="/wishlist"
-            >
-              <i className="fa fa-fw fa-heart text-dark mr-1"></i>
-              <span className="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
-                {wishLength}
-              </span>
-            </NavLink>
+                <NavLink
+                  className="nav-icon position-relative text-decoration-none"
+                  href="#"
+                >
+                  <i className="fa fa-fw fa-user text-dark mr-3"></i>
+                </NavLink>
+              </div>{" "}
+            </>
+          ) : (
+            " "
+          )}
 
-            <NavLink
-              className="nav-icon position-relative text-decoration-none"
-              href="#"
+          {isAdmin && (
+            <Link
+              className="mx-3 btn btn-info"
+              style={{ textDecoration: "none" }}
+              to={"/admin"}
             >
-              <i className="fa fa-fw fa-user text-dark mr-3"></i>
-            </NavLink>
-          </div>
+              Admin
+            </Link>
+          )}
 
           {isAdmin && (
             <Link
@@ -120,7 +143,7 @@ export default function Navbar() {
               style={{ textDecoration: "none" }}
               to={"/admin"}
             >
-              Adminnn
+              Admin
             </Link>
           )}
 
@@ -141,6 +164,14 @@ export default function Navbar() {
                 Register
               </Link>
             </>
+          ) : (
+            ""
+          )}
+
+          {isLoggedIn || isAdmin ? (
+            <button className="btn btn-primary" onClick={onLogOut}>
+              LOGOUT
+            </button>
           ) : (
             ""
           )}

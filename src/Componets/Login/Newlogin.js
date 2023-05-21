@@ -6,20 +6,19 @@ import { login } from "../../Features/auth/authSlice";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { setIsAdmin } from "../../Lib/IsAdmin";
-import {getError, addToken,fetchProfile, getLoading} from "../../Features/user/userSlice"
-
+import axios from "axios";
+import { notification } from "antd";
 
 function Login() {
+  const [antApi, contextHolder] = notification.useNotification();
+  const openNotification = (Msg) => {
+    antApi.info({
+      message: Msg,
+      placement: "top",
+    });
+  };
+
   const navigate = useNavigate();
-
-  // ONLOGOUTBUTTON
-  //     const dispatch = useDispatch();
-
-  //   const onLogOut = ()=>{
-  //     localStorage.removeItem("token");
-  //     dispatch(logout())
-  //     navigate("/login");
-  // }
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,15 +34,18 @@ function Login() {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await api.post("/account/login/", {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        "https://ecommerce-django-ct3k.onrender.com/account/login/",
+        {
+          email: email,
+          password: password,
+        }
+      );
 
       console.log("login response", response);
 
       if (!response.data.token) {
-        console.log(response.data);
+        console.log(response);
       }
 
       if (response.data.is_admin) {
@@ -63,11 +65,13 @@ function Login() {
       console.log(response.data.is_admin);
     } catch (error) {
       console.error(error);
+      openNotification("Email or password is invalid");
     }
   };
 
   return (
     <div className="container mt-5 mb-5">
+      {contextHolder}
       <div className="text-center">SIGN UP</div>
       <Form onSubmit={handleLogin}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -95,29 +99,11 @@ function Login() {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Submit
+          Log in
         </Button>
       </Form>
     </div>
   );
 }
 
-// <form onSubmit={handleLogin}>
-//       <input
-//         type="email"
-//         placeholder="Email"
-//         value={email}
-//         onChange={(event) => setEmail(event.target.value)}
-//       />
-//       <input
-//         type="password"
-//         placeholder="Password"
-//         value={password}
-//         onChange={(event) => setPassword(event.target.value)}
-//       />
-//       <button type="submit" disabled={isLoading}>
-//         {isLoading ? "Logging in..." : "Login"}
-//       </button>
-//       {error && <p>{error}</p>}
-//     </form>
 export default Login;

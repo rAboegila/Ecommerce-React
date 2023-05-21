@@ -36,6 +36,7 @@ export const userSlice = createSlice({
   },
 });
 
+
 export const { setIsAdmin } = userSlice.actions;
 
 export const selectIsAdmin = (state) => state.user.is_admin;

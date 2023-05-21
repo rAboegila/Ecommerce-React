@@ -8,21 +8,10 @@ import { useEffect} from "react";
 
 function Admin(){
 
-  // const isAdmin = useSelector(selectIsAdmin);
-  // const navigate = useNavigate();
-
-  // console.log("is Admin:", isAdmin);
-
-  // useEffect(() => {
-  //   if (!isAdmin) {
-  //     navigate("/");
-  //   }
-  // }, [isAdmin]);
-
     return(
         <>
-        <Link to={'/adminproducts'}>
-   <article className="version">
+        <Link to={'/adminproducts'} style={{textDecoration: 'none', marginLeft: 100}}>
+   <article className="version" style={{display: 'inline-block'}}>
   <section className="page-header">
     <h1 className="page-title">Edit Products</h1>
     <div className="button-group">
@@ -33,7 +22,41 @@ function Admin(){
 </Link>
 
 
-<article className="version">
+     <Link to={'/categories'} style={{textDecoration: 'none', marginLeft: 100}}>
+   <article className="version" style={{display: 'inline-block'}}>
+  <section className="page-header">
+    <h1 className="page-title">Edit Categories</h1>
+    <div className="button-group">
+      <button type="button" className="btn btn-primary">Action</button>
+    </div>
+  </section>
+</article>
+</Link>
+
+<Link to={'/subcategories'} style={{textDecoration: 'none', marginLeft: 100}}>
+   <article className="version" style={{display: 'inline-block'}}>
+  <section className="page-header">
+    <h1 className="page-title">Edit SubCategories</h1>
+    <div className="button-group">
+      <button type="button" className="btn btn-primary">Action</button>
+    </div>
+  </section>
+</article>
+</Link>
+
+<Link  to={'/users'}   style={{textDecoration: 'none', marginLeft: 100}}>
+   <article className="version" style={{display: 'inline-block'}}>
+  <section className="page-header">
+    <h1 className="page-title">Edit Users</h1>
+    <div className="button-group">
+      <button type="button" className="btn btn-primary">Action</button>
+    </div>
+  </section>
+</article>
+</Link>
+
+<Link  to={'/orders'}   style={{textDecoration: 'none', marginLeft: 100}}>
+   <article className="version" style={{display: 'inline-block'}}>
   <section className="page-header">
     <h1 className="page-title">Edit Orders</h1>
     <div className="button-group">
@@ -41,11 +64,12 @@ function Admin(){
     </div>
   </section>
 </article>
+</Link>
 
-<Link>
-<article className="version">
+<Link  to={'/inventories'}  style={{textDecoration: 'none', marginLeft: 100}}>
+<article className="version" style={{display: 'inline-block'}}>
   <section className="page-header">
-    <h1 className="page-title">Title of Page</h1>
+    <h1 className="page-title">Edit inventories</h1>
     <div className="button-group">
       <button type="button" className="btn btn-primary">Action</button>
     </div>
