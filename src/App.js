@@ -20,6 +20,8 @@ import Details from "./Pages/User/UserDetails";
 import Orders from "./Pages/User/UserOrders";
 import EditProduct from "./Admin/Edit Product/EditProduct";
 import Newlogin from "./Componets/Login/Newlogin";
+import Checkout from "./Pages/Checkout/Checkout";
+import CheckSucces from "./Pages/Checkout/CheckSucces";
 
 export default function App() {
   return (
@@ -37,6 +39,8 @@ export default function App() {
           <Route path="details" element={<Details />} />
           <Route path="" element={<Orders />} />
         </Route>
+        <Route path="/checkout" element={<Checkout/>}/>
+        <Route path="/checkout/success" element={<CheckSucces />} />
         <Route path="/products/:productId/edit" element={<EditProduct />} />
       </Routes>
       <Footer />
