@@ -117,7 +117,7 @@ export default function Navbar() {
 
                 <NavLink
                   className="nav-icon position-relative text-decoration-none"
-                  href="#"
+                  to='/user'
                 >
                   <i className="fa fa-fw fa-user text-dark mr-3"></i>
                 </NavLink>
