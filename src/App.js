@@ -8,6 +8,7 @@ import Products from "./Pages/Products/Products";
 import Home from "./Pages/Home/Home";
 import NotFound from "./Pages/404/NotFound";
 import WishList from "./Pages/WishList/Wishlist";
+import About from "./Pages/About/About";
 
 // Components
 import Navbar from "./Componets/Navbar/Navbar";
@@ -44,30 +45,48 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route
-            element={<ProtectedRoutes requiresLogin={true} redirectTo="/" />}
-          >
-              <Route path="adminproducts" element={<AdminProducts />} />
-              <Route path="products/add" element={<AddProduct />} />
-              <Route path="/product/update/:productId" element={<EditProduct />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route exact path="product/:productId/" element={<ProductDetails />} />
-              <Route path="/categories" element={<CategoryList />} />
-              <Route path="/category/add" element={<AddCategory/>} />
-              <Route path="/category/:categoryId" element={<CategoryCard />} />
-              <Route path="/category/update/:categoryId" element={<EditCategory />} />
-              <Route path="/subcategories" element={<SubCategoryList />} />
-              <Route path="/subcategory/add" element={<AddSubCategory/>} />
-              <Route path="/subcategory/:subcategoryId" element={<SubCategoryCard />} />
-              <Route path="/subcategory/update/:subcategoryId" element={<EditSubCategory />} />
-              <Route path="/users" element={<UsersList />} />
-              <Route path="/account/:userId/change-active" element={<EditUserStatus />} />
-              <Route path="/orders" element={<OrdersList />} />
-              <Route path="/order/updateStatus/:orderId" element={<EditOrders />} />
-              <Route path="/inventories" element={<Inventory />} />
-              <Route path="/inventory/add" element={<AddInventory />} />
-              <Route path="/product/:productId/update_inventory/:inventoryId" element={<EditInventory />} />
-
-          </Route>
+          element={<ProtectedRoutes requiresLogin={true} redirectTo="/" />}
+        >
+          <Route path="adminproducts" element={<AdminProducts />} />
+          <Route path="products/add" element={<AddProduct />} />
+          <Route path="/product/update/:productId" element={<EditProduct />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route
+            exact
+            path="product/:productId/"
+            element={<ProductDetails />}
+          />
+          <Route path="/categories" element={<CategoryList />} />
+          <Route path="/category/add" element={<AddCategory />} />
+          <Route path="/category/:categoryId" element={<CategoryCard />} />
+          <Route
+            path="/category/update/:categoryId"
+            element={<EditCategory />}
+          />
+          <Route path="/subcategories" element={<SubCategoryList />} />
+          <Route path="/subcategory/add" element={<AddSubCategory />} />
+          <Route
+            path="/subcategory/:subcategoryId"
+            element={<SubCategoryCard />}
+          />
+          <Route
+            path="/subcategory/update/:subcategoryId"
+            element={<EditSubCategory />}
+          />
+          <Route path="/users" element={<UsersList />} />
+          <Route
+            path="/account/:userId/change-active"
+            element={<EditUserStatus />}
+          />
+          <Route path="/orders" element={<OrdersList />} />
+          <Route path="/order/updateStatus/:orderId" element={<EditOrders />} />
+          <Route path="/inventories" element={<Inventory />} />
+          <Route path="/inventory/add" element={<AddInventory />} />
+          <Route
+            path="/product/:productId/update_inventory/:inventoryId"
+            element={<EditInventory />}
+          />
+        </Route>
 
         <Route
           element={
@@ -90,6 +109,9 @@ export default function App() {
           <Route path="/login" element={<Newlogin />} />
         </Route>
 
+        <Route path="/about" element={<About />}>
+          {" "}
+        </Route>
         <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
