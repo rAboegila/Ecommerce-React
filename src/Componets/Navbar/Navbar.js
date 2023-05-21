@@ -10,6 +10,10 @@ import {
   fetchCartItems,
 } from "../../Features/cart/cartSlice";
 
+import {
+  fetchItems,
+  getWishNumItems,
+} from "../../Features/wishlist/wishlistSlice";
 //Components
 import Cart from "../Cart/Cart";
 // import Logout from "../Logout";
@@ -21,7 +25,7 @@ export default function Navbar() {
   const dispatch = useDispatch();
 
   const cartLength = useSelector(getNumItems);
-  console.log(cartLength);
+  const wishLength = useSelector(getWishNumItems);
   const showDrawer = () => {
     dispatch(openCart());
   };
@@ -32,7 +36,7 @@ export default function Navbar() {
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(fetchCartItems());
-      console.log("numberOfItems  ", cartLength);
+      dispatch(fetchItems());
     }
   }, []);
 
@@ -41,7 +45,7 @@ export default function Navbar() {
       <div className="container d-flex justify-content-between align-items-center">
         <NavLink
           className="navbar-brand text-success logo h1 align-self-center"
-          href="#"
+          to="/"
         >
           Jassa
         </NavLink>
@@ -79,36 +83,10 @@ export default function Navbar() {
                   Shop
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" href="#">
-                  Contact
-                </NavLink>
-              </li>
             </ul>
           </div>
 
           <div className="navbar align-self-center d-flex">
-            <div className="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputMobileSearch"
-                  placeholder="Search ..."
-                />
-                <div className="input-group-text">
-                  <i className="fa fa-fw fa-search"></i>
-                </div>
-              </div>
-            </div>
-            <NavLink
-              className="nav-icon d-none d-lg-inline"
-              href="#"
-              data-bs-toggle="modal"
-              data-bs-target="#templatemo_search"
-            >
-              <i className="fa fa-fw fa-search text-dark mr-2"></i>
-            </NavLink>
             <NavLink
               className="nav-icon position-relative text-decoration-none"
               onClick={showDrawer}
@@ -120,12 +98,19 @@ export default function Navbar() {
             </NavLink>
             <NavLink
               className="nav-icon position-relative text-decoration-none"
+              to="/wishlist"
+            >
+              <i className="fa fa-fw fa-heart text-dark mr-1"></i>
+              <span className="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
+                {wishLength}
+              </span>
+            </NavLink>
+
+            <NavLink
+              className="nav-icon position-relative text-decoration-none"
               href="#"
             >
               <i className="fa fa-fw fa-user text-dark mr-3"></i>
-              {/* <span className="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
-                +99
-              </span> */}
             </NavLink>
           </div>
 

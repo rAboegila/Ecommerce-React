@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Card, Modal, Radio, Space, Error, Alert, Button } from "antd";
+import { Card, Modal, Radio, Space, Error, message, Alert, Button } from "antd";
 import { HeartOutlined, HeartFilled, ShopFilled } from "@ant-design/icons";
 
 import api from "../../Lib/axios";
 
 import { addItem, addProduct } from "../../Features/cart/cartSlice";
-
+import { addWishItem } from "../../Features/wishlist/wishlistSlice";
 import {
   formatSize,
   formatColor,
@@ -28,25 +28,28 @@ export default function ProductCard({ product, isLoading }) {
   const [confirmModalLoading, setConfirmModalLoading] = useState(false);
   const [inStock, setInStock] = useState(true);
   const [errMsg, setErrMsg] = useState("All Good");
-
   const [disable, setDisable] = useState(false);
   const [err, setError] = useState(false);
   const showModal = () => {
     setModalOpen(true);
   };
-
-  // function formatMetadata(color, size) {
-  //   return { color: formatColor(color), size: formatSize(size) };
-  // }
-  // function unformatMetadata(color, size) {
-  //   return {
-  //     color: reverseFormattedColor(color),
-  //     size: reverseFormattedSize(size),
-  //   };
-  // }
+  const [messageApi, contextHolder] = message.useMessage();
+  const successMsg = (msg) => {
+    messageApi.open({
+      type: "success",
+      content: msg,
+    });
+  };
+  const errorMsg = (msg) => {
+    messageApi.open({
+      type: "error",
+      content: msg,
+    });
+  };
   const handleOk = () => {
     if (!disable) {
       setConfirmModalLoading(true);
+      console.log("debugging for undefind", choosenSize);
       api
         .get(
           `/product/${product.id}/inventory/${reverseFormattedColor(
@@ -120,6 +123,21 @@ export default function ProductCard({ product, isLoading }) {
         setErrMsg(err.response.data.error);
       });
   };
+  const addToWishList = () => {
+    console.log("atempt to add to wishlist>>", product);
+
+    api
+      .post(`/wishlist/add_product/${product.id}/`)
+      .then((res) => {
+        console.log(res);
+        dispatch(addWishItem(product));
+        successMsg("Added to your wishlist succesfully");
+      })
+      .catch((err) => {
+        console.log("add to wishlist failed!\n err >>> ", err);
+        errorMsg(err.response.data.error);
+      });
+  };
 
   useEffect(() => {
     if (modalOpen) {
@@ -158,6 +176,8 @@ export default function ProductCard({ product, isLoading }) {
   };
   return (
     <>
+      {contextHolder}
+
       <Card
         key={product.id + product.name}
         hoverable
@@ -175,7 +195,10 @@ export default function ProductCard({ product, isLoading }) {
           />
         }
         actions={[
-          <Link key={`${product.id}-${product.name}-wishlist`} onClick={{}}>
+          <Link
+            key={`${product.id}-${product.name}-wishlist`}
+            onClick={addToWishList}
+          >
             <HeartOutlined />
           </Link>,
           <Link key={`${product.id}-${product.name}-buy`} onClick={showModal}>
