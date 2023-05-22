@@ -1,0 +1,14 @@
+#list {
+  margin: auto;
+  width: 90%;
+  margin-top: 2rem;
+}
+#content {
+  margin: auto;
+  width: 80%;
+  margin-top: 2rem;
+}
+
+.list-item {
+  margin-bottom: 1rem;
+}

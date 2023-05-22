@@ -68,10 +68,10 @@ let {subcategoryId} = useParams();
                         <input onChange={(e) => setName(e.target.value)} type="text" className="form-control" id="exampleInputEmail1" aria-describedby="Category Title" placeholder="Category Title" />
                     </div>
                     <div className="mb-3">
-                        <select className="btn-primary" style={{ backgroundColor: 'orange' }} onChange={(e) => { setParentCategory(category[e.target.value-1].name) }}>
+                        <select className="btn-primary" style={{ backgroundColor: 'orange' }} onChange={(e) => { setParentCategory(e.target.value) }}>
                             <option value="">Select Parent Category</option>
                             {category.map((cat) => {
-                                return <option className="btn btn-info m-4" key={cat.id} value={cat.id}>{cat.name}</option>
+                                return <option className="btn btn-info m-4" key={cat.id} value={cat.name}>{cat.name}</option>
                             })}
                         </select>
                     </div>

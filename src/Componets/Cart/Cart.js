@@ -1,18 +1,22 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Drawer, Space } from "antd";
-
 import { isOpen, closeCart } from "../../Features/cart/cartSlice";
 
 import CartList from "../CartList/CartList";
 export default function Cart() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();  
   const openDrawer = useSelector(isOpen);
   const onClose = () => {
     console.log("closing?", openDrawer);
     dispatch(closeCart());
   };
 
+  const CheckOut=()=>{
+    navigate("/checkout");
+  }
   return (
     <Drawer
       title="My Cart"
@@ -23,7 +27,7 @@ export default function Cart() {
       extra={
         <Space>
           <Button onClick={onClose}>Cancel</Button>
-          <Button type="primary" onClick={onClose}>
+          <Button type="primary" onClick={CheckOut}>
             CheckOut
           </Button>
         </Space>

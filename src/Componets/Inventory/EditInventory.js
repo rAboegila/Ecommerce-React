@@ -79,7 +79,7 @@ function EditInventory() {
 
     return (
         <>
-            <h1>Add Inventory</h1>
+            <h1>Edit Inventory</h1>
             <div className="container">
                 
                 <form onSubmit={formSubmit} className="mt-5 mb-5">

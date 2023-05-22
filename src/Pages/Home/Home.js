@@ -108,7 +108,7 @@ export default function Home() {
         <CategoryCard/> */}
  {category.map((cat)=>{
           return(
-          <div className="col-12 col-md-4 p-5 mt-3" style={{display: "inline-block"}}>
+          <div className="col-12 col-md-4 p-5 mt-3" style={{display: "inline-block", textAlign: 'center'}}>
           {/* <h5 className="text-center mt-3 mb-3">{cat.name}</h5>
           <p className="text-center">
           <p>{cat.description}</p>

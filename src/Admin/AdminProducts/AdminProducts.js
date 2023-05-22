@@ -1,21 +1,17 @@
-import { useEffect, useState, useMemo  } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 import { Link } from "react-router-dom";
 
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectIsAdmin } from '../../Lib/IsAdmin';
+import { selectIsAdmin } from "../../Lib/IsAdmin";
 import api from "../../Lib/axios";
 import axios from "axios";
 
-
 function AdminProducts() {
-
-  // const isAdmin = useSelector(selectIsAdmin);
   const navigate = useNavigate();
   const token = localStorage.getItem("token_admin");
-
 
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -35,22 +31,26 @@ function AdminProducts() {
     Swal.fire({
       title: `Are you sure to delete ${product.name}?`,
       showCancelButton: true,
-    }).then( async(data) => {
+    }).then(async (data) => {
       if (data.isConfirmed) {
-       await axios.delete(`https://ecommerce-django-ct3k.onrender.com/product/delete/${product.id}/`, {
-        headers:{
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      }
-       })
-          getAllProducts();
+        await axios.delete(
+          `https://ecommerce-django-ct3k.onrender.com/product/delete/${product.id}/`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        getAllProducts();
       }
     });
   };
 
   return (
     <>
-      <h1>Admin Page</h1>
+    <div className="container">
+      <h1 style={{textAlign: 'center'}}>Admin Page</h1>
       <Link to={"/products/add"} className="btn btn-success mt-3">
         Add new product
       </Link>
@@ -77,7 +77,7 @@ function AdminProducts() {
                 <td>
                   <button
                     className="btn btn-danger btn-sm"
-                    style={{backgroundColor: 'red'}}
+                    style={{ backgroundColor: "red" }}
                     onClick={() => {
                       deleteProduct(product);
                     }}
@@ -102,6 +102,7 @@ function AdminProducts() {
           })}
         </tbody>
       </table>
+      </div>
     </>
   );
 }

@@ -33,11 +33,14 @@ export const userSlice = createSlice({
     setIsAdmin: (state, action) => {
       state.is_admin = true;
     },
+    adminlogout: (state, action) => {
+      state.is_admin = false;
+    }
   },
 });
 
 
-export const { setIsAdmin } = userSlice.actions;
+export const { setIsAdmin, adminlogout } = userSlice.actions;
 
 export const selectIsAdmin = (state) => state.user.is_admin;
 

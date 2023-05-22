@@ -50,7 +50,8 @@ function CategoryList() {
 
   return (
     <>
-      <h1>Categories Page</h1>
+      <div className="container">
+      <h1 style={{textAlign: 'center'}}>Categories Page</h1>
       <Link to={"/category/add"} className="btn btn-success mt-3">
         Add new Category
       </Link>
@@ -96,6 +97,7 @@ function CategoryList() {
           })}
         </tbody>
       </table>
+      </div>
     </>
   );
 }

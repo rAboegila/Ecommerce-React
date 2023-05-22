@@ -1,17 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
 
 const initialState = {
   isLoggedIn: localStorage.getItem("token") ? true : false,
+  
 };
+
 
 const authSlice = createSlice({
   name: "auth",
   //   initialState: {
-  //     isLoggedIn: false,
-  //     token: null,
-  //     refresh_token: null,
-  //     isLoading: false,
-  //     error: null,
+    //     isLoggedIn: false,
+    //     token: null,
+    //     refresh_token: null,
+    //     isLoading: false,
+    //     error: null,
   //   },
 
   initialState,

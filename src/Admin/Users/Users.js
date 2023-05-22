@@ -51,7 +51,8 @@ function UsersList() {
 
   return (
     <>
-      <h1>USERS Page</h1>
+    <div className="container">
+      <h1 style={{textAlign: 'center'}}>USERS Page</h1>
 
       <table className="table table-striped mt-5">
         <thead>
@@ -90,6 +91,7 @@ function UsersList() {
           })}
         </tbody>
       </table>
+      </div>
     </>
   );
 }

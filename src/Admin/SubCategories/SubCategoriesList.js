@@ -50,7 +50,8 @@ function SubCategoryList() {
 
   return (
     <>
-      <h1>SubCategories Page</h1>
+    <div className="container">
+      <h1 style={{textAlign: 'center'}}>SubCategories Page</h1>
       <Link to={"/subcategory/add"} className="btn btn-success mt-3">
         Add new SubCategory
       </Link>
@@ -98,6 +99,7 @@ function SubCategoryList() {
           })}
         </tbody>
       </table>
+      </div>
     </>
   );
 }

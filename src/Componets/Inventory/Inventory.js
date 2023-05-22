@@ -52,7 +52,8 @@ function Inventory() {
 
   return (
     <>
-      <h1>Admin Page</h1>
+    <div className="container">
+      <h1 style={{textAlign: 'center'}}>inventories Page</h1>
       <Link to={"/inventory/add"} className="btn btn-success mt-3">
         Add new Inventory
       </Link>
@@ -99,6 +100,7 @@ function Inventory() {
           })}
         </tbody>
       </table>
+      </div>
     </>
   );
 }
