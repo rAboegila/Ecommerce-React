@@ -95,17 +95,7 @@ export default function Home() {
         <div className="row text-center pt-3" >
           <div className="col-lg-6 m-auto" >
             <h1 className="h1">Categories of The Month</h1>
-        {category.map((cat)=>{
-          return(
-          <div className="col-12 col-md-4 p-5 mt-3" style={{display: "inline-block"}}>
-          <h5 className="text-center mt-3 mb-3">{cat.name}</h5>
-          <p className="text-center">
-            <Link style={{color: 'black'}} className="btn btn-success">Go Shop</Link>
-          </p>
-        </div>
-      )
-
-        })}
+       
             <p>
             Discover our wide range of categories, tailored to suit your style and preferences. Explore our diverse collection of clothing categories, featuring the latest trends and timeless classics. Browse through our carefully curated categories to find the perfect outfit for any occasion. From trendy tops to elegant dresses and stylish accessories, our categories have something for everyone.
             </p>
@@ -116,7 +106,26 @@ export default function Home() {
         {/* <CategoryCard/>
         <CategoryCard/>
         <CategoryCard/> */}
+ {category.map((cat)=>{
+          return(
+          <div className="col-12 col-md-4 p-5 mt-3" style={{display: "inline-block"}}>
+          {/* <h5 className="text-center mt-3 mb-3">{cat.name}</h5>
+          <p className="text-center">
+          <p>{cat.description}</p>
+            <Link style={{color: 'black'}} className="btn btn-success">Go Shop</Link>
+          </p> */}
+              <div className="card" style={{width: 300,backgroundColor: 'antiquewhite'}}>
+              <div className="card-body">
+                <h5 className="card-title">{cat.name}</h5>
+                <p className="card-text">{cat.description}.</p>
+                <Link to={`/products`} style={{color: 'black'}} className="btn btn-success card-link">Go Shop</Link>
+                
+              </div>
+            </div>
+        </div>
+      )
 
+        })}
         </div>
       </section>
 

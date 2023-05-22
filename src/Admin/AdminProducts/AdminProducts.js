@@ -9,17 +9,9 @@ import { selectIsAdmin } from '../../Lib/IsAdmin';
 import api from "../../Lib/axios";
 import axios from "axios";
 
-let PageSize = 10;
 
 function AdminProducts() {
 
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * PageSize;
-    const lastPageIndex = firstPageIndex + PageSize;
-    return products.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage]);
   // const isAdmin = useSelector(selectIsAdmin);
   const navigate = useNavigate();
   const token = localStorage.getItem("token_admin");

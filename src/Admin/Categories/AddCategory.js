@@ -24,6 +24,7 @@ function AddCategory() {
             'Authorization': `Bearer ${token}`},
              body: JSON.stringify({
                  name,
+                 description,
              })
          })
          .then((res) => {res.json()
@@ -36,6 +37,7 @@ function AddCategory() {
     
     
     const [name, setName] = useState('');
+    const [description, setDesc] = useState('');
 
     return (
         <>
@@ -45,6 +47,10 @@ function AddCategory() {
                     <div className="mb-3">
                         <label htmlFor="exampleInputEmail1" className="form-label">Category Title</label>
                         <input onChange={(e)=> setName(e.target.value)} type="text" className="form-control" id="exampleInputEmail1" aria-describedby="Category Title" placeholder="Category Title" />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="exampleInputEmail1" className="form-label">Category Description</label>
+                        <input onChange={(e)=> setDesc(e.target.value)} type="text" className="form-control" id="exampleInputEmail1" aria-describedby="Category Title" placeholder="Add desc" />
                     </div>
                     
                
