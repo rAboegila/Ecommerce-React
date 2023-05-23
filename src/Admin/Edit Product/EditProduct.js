@@ -47,6 +47,21 @@ function EditProduct() {
         });
 
     }
+    console.log(productId);
+
+    // const [oldvalue, setoldValue] = useState(''); 
+
+    // const getproduct =() =>{ axios.get(`https://ecommerce-django-ct3k.onrender.com/product/${productId}/`)
+    //     .then((response) => {
+    //         console.log(response.data);
+    //         // navigate('/adminproducts');
+    //         setoldValue(response.data.name)
+    //     })
+    //     .catch((error) => {
+    //         console.error(error);
+    //     });
+    
+    // }
     
     const [name, setName] = useState('');
     const [description, setDesc] = useState('');
@@ -85,6 +100,7 @@ function EditProduct() {
     useEffect(() => {
         getCategories();
         console.log(category);
+        // getproduct();
 
         // getSubCategories();
     },[])
@@ -96,7 +112,7 @@ function EditProduct() {
                 <form onSubmit={formSubmit} className="mt-5 mb-5">
                     <div className="mb-3">
                         <label htmlFor="exampleInputEmail1" className="form-label">Title</label>
-                        <input onChange={(e)=> setName(e.target.value)} type="text" className="form-control" id="exampleInputEmail1" aria-describedby="Product Title" placeholder="Product Title" />
+                        <input onChange={(e)=> setName(e.target.value)} type="text" className="form-control" id="exampleInputEmail1" aria-describedby="Product Title" placeholder="Product title" />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="exampleDescription" className="form-label">Description</label>
