@@ -58,8 +58,6 @@ function Login() {
         console.log(response.data);
         console.log("Login Successfully");
         dispatch(login()); // Dispatch the login action
-        // dispatch(addToken(response.data.token));
-        // dispatch(fetchProfile());
         navigate("/");
       }
       console.log(response.data.is_admin);

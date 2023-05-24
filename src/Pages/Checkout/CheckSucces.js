@@ -10,7 +10,7 @@ export default function CheckSucces () {
     <Card title="Payment Done Successfully" className='success-checkout'>
     <CheckCircleOutlined />
         <NavLink to="/">
-            <button className='btn btn-secondary mx-5'>Return Home</button>
+            <button className='btn btn-secondary mx-5' style={{backgroundColor:"GrayText"}}>Return Home</button>
         </NavLink>
     </Card>
     </>

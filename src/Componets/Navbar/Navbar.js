@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../Features/auth/authSlice";
+import { setIsAdmin , selectIsAdmin} from "../../Lib/IsAdmin";
 
 //Redux
 import {
@@ -22,9 +23,14 @@ import Cart from "../Cart/Cart";
 import "./Navbar.css";
 
 export default function Navbar() {
+const is_admin = useSelector(selectIsAdmin);
+
   const onLogOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("token_admin");
+    if(is_admin === true){
+      dispatch(setIsAdmin(false));
+  }
     dispatch(logout());
     navigate("/login");
   };

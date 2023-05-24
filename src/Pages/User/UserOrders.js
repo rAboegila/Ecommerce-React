@@ -23,14 +23,12 @@ export default function Orders() {
   function changePage(currentPage) {
     setCurrentOrder(currentPage);
   }
-  async function fetchData() {
-    try {
-      const response = await api.get("/order/list_orders/");
-      setOrders(response.data);
-    } catch (err) {
-      errorNotification("Couldn't Return Orders");
-    }
-    setIsLoading(false);
+  function fetchData() {
+    api
+      .get("/order/list_orders/")
+      .then((response) => setOrders(response.data))
+      .catch((err) => errorNotification("Couldn't Return Orders"))
+      .finally(() => setIsLoading(false));
   }
   useEffect(() => {
     fetchData();
@@ -46,18 +44,28 @@ export default function Orders() {
   return (
     <>
       {contextHolder}
-      <Order
-        key={orders[currentOrder - 1].id}
-        order={orders[currentOrder - 1]}
-        renderOrders={fetchData}
-      />
-      <Pagination
-        className="m-3"
-        defaultCurrent={1}
-        total={orders.length}
-        pageSize={1}
-        onChange={changePage}
-      />
+      { orders.length > 0 && (<>
+      
+        <Order
+          key={orders[currentOrder - 1].id}
+          order={orders[currentOrder - 1]}
+          renderOrders={fetchData}
+        />
+        <Pagination
+          className="m-3"
+          defaultCurrent={1}
+          total={orders.length}
+          pageSize={1}
+          onChange={changePage}
+        />
+      </>
+      )
+      }
+      {
+        orders.length === 0 && (<Card bordered={false} className="order">
+          <p>You Still Didn't Order so far</p>
+        </Card>)
+      }
     </>
   );
 }
@@ -102,6 +110,7 @@ function Order({ order, renderOrders }) {
           dataSource={order.orderItems}
           size="small"
           pagination={{ position: ["none", "none"] }}
+          rowKey={order.id}
         >
           <ColumnGroup title="Product">
             <Column
@@ -116,12 +125,24 @@ function Order({ order, renderOrders }) {
                 />
               )}
             />
-            <Column title="" dataIndex="product_name" key="product_name" />
+            <Column
+              title=""
+              dataIndex="product_name"
+              key="product_name"
+            />
           </ColumnGroup>
-          <Column title="Size" dataIndex="size" key="size" />
+          <Column title="Size" dataIndex="size" key ="size" />
           <Column title="Color" dataIndex="color" key="color" />
-          <Column title="Quantity" dataIndex="quantity" key="quantity" />
-          <Column title="Price" dataIndex="product_price" key="product_price" />
+          <Column
+            title="Quantity"
+            dataIndex="quantity"
+            key="quantity"
+          />
+          <Column
+            title="Price"
+            dataIndex="product_price"
+            key="product_price"
+          />
           <Column title="Total" dataIndex="total" key="total" />
         </Table>
         <div className="container order-footer">
@@ -165,10 +186,10 @@ function Order({ order, renderOrders }) {
             <div className="col">Total</div>
             <div className="col">{order.total}</div>
           </div>
-          {order.status == "pending" && (
+          {order.status === "pending" && (
             <div className="row">
               <Button
-                disabled={order.status != "pending"}
+                disabled={order.status !== "pending"}
                 type="primary"
                 danger
                 onClick={() => cancelOrder(order.id)}

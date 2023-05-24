@@ -17,7 +17,6 @@ import AdminProducts from "./Admin/AdminProducts/AdminProducts";
 import AddProduct from "./Admin/AddProduct/AddProduct";
 import ProductDetails from "./Componets/ProducDetails/ProductDetails";
 import Register from "./Componets/Register/Register";
-import Login from "./Componets/Login/Login";
 import EditProduct from "./Admin/Edit Product/EditProduct";
 import Newlogin from "./Componets/Login/Newlogin";
 import Admin from "./Admin/Admin/Admin";

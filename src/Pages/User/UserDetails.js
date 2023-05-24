@@ -39,9 +39,11 @@ export default function Details (){
         dateOfBirth: new Date(),
       });
 
-      async function fetchData(){
-        const response = await api.get('/account/profile/');
-        setUser({
+       function fetchData(){
+        api.get('/account/profile/')
+        .then((response)=>
+        {
+          setUser({
             username:response.data.username,
             firstName: response.data.first_name,
             lastName: response.data.last_name,
@@ -50,6 +52,9 @@ export default function Details (){
             phone: response.data.phone
         })
         setIsLoading(false);
+        })
+        .catch((err)=>console.log(err));
+        
       }
       useEffect(()=>{
         fetchData();
