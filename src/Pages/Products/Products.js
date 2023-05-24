@@ -30,11 +30,8 @@ export default function Products() {
               console.log(res.data);
               setFilteredProducts(res.data);
             });
-            if (filteredProducts.length == 0) {
-              setEmptyState(true);
-            } else if (filteredProducts.length >= 0) setEmptyState(false);
-
-            console.log(filteredProducts.length, "-", emptyState);
+            console.log("filtered\n", filteredProducts);
+            console.log("all\n", products);
           }}
           style={{
             textDecoration: "none",
@@ -58,11 +55,6 @@ export default function Products() {
             api.get(`/subcategory/${id}/products/`).then((res) => {
               console.log(res.data);
               setFilteredProducts(res.data);
-              if (filteredProducts.length == 0) {
-                setEmptyState(true);
-              } else if (filteredProducts.length >= 0) setEmptyState(false);
-
-              console.log(filteredProducts.length, "-", emptyState);
             });
           }}
           style={{
@@ -101,9 +93,7 @@ export default function Products() {
         );
       })
       .catch((err) => console.error(err))
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => {});
 
     api
       .get("product/list/")
@@ -117,6 +107,16 @@ export default function Products() {
       });
   }, []);
 
+  useEffect(() => {
+    if (filteredProducts.length === 0) {
+      console.log(" if ", filteredProducts.length === 0);
+
+      setEmptyState(true);
+    } else if (filteredProducts.length > 0) {
+      console.log("else if ", filteredProducts.length >= 0);
+      setEmptyState(false);
+    }
+  }, [filteredProducts]);
   const displayProducts = () => {
     return filteredProducts.map((product, i) => {
       return (
