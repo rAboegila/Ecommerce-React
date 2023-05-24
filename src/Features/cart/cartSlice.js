@@ -44,6 +44,11 @@ const closeCartDrawer = (state) => {
   state.isOpen = false;
 };
 
+const checkoutReducer = (state) => {
+  console.log("checkout state", state);
+  state.cartItems = [];
+  state.isOpen = false;
+};
 export const addProduct = createAsyncThunk(
   "cart/addProduct",
   async (product) => {
@@ -81,6 +86,7 @@ const cartSlice = createSlice({
     decrementItem: decrementItemReducer,
     openCart: openCartDrawer,
     closeCart: closeCartDrawer,
+    checkout: checkoutReducer,
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCartItems.pending, (state) => {
@@ -108,6 +114,7 @@ export const {
   decrementItem,
   openCart,
   closeCart,
+  checkout,
 } = cartSlice.actions;
 export const getCartItems = (state) => state.cart.cartItems;
 export const isOpen = (state) => state.cart.isOpen;

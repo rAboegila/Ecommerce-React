@@ -8,7 +8,7 @@ import {
   MinusCircleFilled,
   DeleteFilled,
 } from "@ant-design/icons";
-import { getToken } from "../../Features/user/userSlice";
+// import { getToken } from "../../Features/user/userSlice";
 import {
   getCartItems,
   incrementItem,
@@ -28,25 +28,23 @@ export default function CartList() {
   const totalPrice = useSelector(getPrice);
 
   useEffect(() => {
-    const data = dispatch(fetchCartItems());
+    dispatch(fetchCartItems());
   }, []);
 
   const removeFromCart = (item) => {
-
     api
       .delete(`/cart/item/remove/${item.id}/`)
       .then((res) => {
-        const respo = dispatch(removeItem(item));
+        dispatch(removeItem(item));
       })
-      .catch((err) => {
-      });
+      .catch((err) => {});
   };
   const incrementQuantity = (item, index) => {
     const body = { quantity: item.quantity + 1 };
     api
       .put(`/cart/item/update/${item.id}/`, body)
       .then((res) => {
-        const respo = dispatch(incrementItem(item));
+        dispatch(incrementItem(item));
       })
       .catch((err) => {
         /////Add Alert message and disable add button
@@ -59,8 +57,7 @@ export default function CartList() {
       .then((res) => {
         const respo = dispatch(decrementItem(item));
       })
-      .catch((err) => {
-      });
+      .catch((err) => {});
   };
   return (
     <>

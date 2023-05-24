@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Formik } from "formik";
+import { checkout } from "../../Features/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
 import api from "../../Lib/api";
+import { useDispatch } from "react-redux";
 
 export default function Checkout() {
   const navigate = useNavigate();
   const [method, setMethod] = useState("credit");
+  const dispatch = useDispatch();
   return (
     <>
       <Formik
@@ -26,8 +29,13 @@ export default function Checkout() {
             if (method === "cod") {
               api
                 .post("order/checkout/", reqBody)
-                .then(navigate("success"))
-                .catch(() => {});
+                .then(() => {
+                  navigate("success");
+                  dispatch(checkout());
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
             } else {
               const token = localStorage.getItem("token");
               fetch(
