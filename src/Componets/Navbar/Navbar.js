@@ -23,9 +23,7 @@ import {
   removeUser,
   getProfile,
 } from "../../Features/user/userSlice";
-//Components
 import Cart from "../Cart/Cart";
-// import Logout from "../Logout";
 
 import "./Navbar.css";
 
@@ -53,7 +51,6 @@ export default function Navbar() {
   };
   const isAdmin = useSelector((state) => state.user.is_admin);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  console.log("isLoggedIN", isLoggedIn);
   const profile = useSelector(getProfile);
 
   useEffect(() => {
@@ -95,27 +92,29 @@ export default function Navbar() {
           className="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between"
           id="templatemo_main_nav"
         >
+          <div className="flex-fill">
+            <ul className="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/">
+                  Home
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/about">
+                  About
+                </NavLink>
+              </li>
+              {!isAdmin && (
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/products">
+                    Shop
+                  </NavLink>
+                </li>
+              )}
+            </ul>
+          </div>
           {!isAdmin && isLoggedIn && (
             <>
-              <div className="flex-fill">
-                <ul className="nav navbar-nav d-flex justify-content-between mx-lg-auto">
-                  <li className="nav-item">
-                    <NavLink className="nav-link" to="/">
-                      Home
-                    </NavLink>
-                  </li>
-                  <li className="nav-item">
-                    <NavLink className="nav-link" to="/about">
-                      About
-                    </NavLink>
-                  </li>
-                  <li className="nav-item">
-                    <NavLink className="nav-link" to="/products">
-                      Shop
-                    </NavLink>
-                  </li>
-                </ul>
-              </div>
               <div className="navbar align-self-center d-flex">
                 <NavLink
                   className="nav-icon position-relative text-decoration-none"
@@ -140,7 +139,6 @@ export default function Navbar() {
                   className="nav-icon position-relative text-decoration-none"
                   to="/user"
                 >
-                  {/* <i className="fa fa-fw fa-user text-dark mr-3"></i> */}
                   <img src={profile.profileImgUrl} alt="" />
                 </NavLink>
               </div>{" "}
@@ -170,15 +168,17 @@ export default function Navbar() {
           {!isLoggedIn && !isAdmin ? (
             <>
               <Link
-                className="mx-1 btn btn-primary"
-                style={{ textDecoration: "none" }}
+                className="mx-1 btn"
+                id="login"
+                style={{ textDecoration: "none", textTransform: "capitalize" }}
                 to={"/login"}
               >
                 Login
-              </Link>{" "}
+              </Link>
               <Link
-                className="mx-1 btn btn-primary"
-                style={{ textDecoration: "none" }}
+                className="mx-1 btn"
+                id="register"
+                style={{ textDecoration: "none", textTransform: "capitalize" }}
                 to={"/register"}
               >
                 Register
@@ -190,7 +190,7 @@ export default function Navbar() {
 
           {isLoggedIn || isAdmin ? (
             <button className="btn btn-primary" onClick={onLogOut}>
-              LOGOUT
+              Log Out
             </button>
           ) : (
             ""
