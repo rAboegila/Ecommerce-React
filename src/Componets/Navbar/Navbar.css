@@ -14,3 +14,16 @@
 #templatemo_main_nav .navbar .nav-icon {
   margin-right: 20px;
 }
+
+.nav-icon img {
+  width: 40px; /* adjust the width to your liking */
+  height: 40px; /* adjust the height to your liking */
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+
+.nav-icon img:hover {
+  border-color: #212934;
+  border-width: 5px;
+}

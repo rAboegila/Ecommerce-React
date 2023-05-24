@@ -29,8 +29,6 @@ function EditProduct() {
         formData.append('subcategory', subcategoryId);
         formData.append('imageUrl', imageUrl);
 
-        console.log(formData);
-        console.log(categoryId);
 
         axios.put(`https://ecommerce-django-ct3k.onrender.com/product/update/${productId}/`, formData, {
             headers: {
@@ -39,11 +37,9 @@ function EditProduct() {
             }
         })
         .then((response) => {
-            console.log(response.data);
             navigate('/adminproducts');
         })
         .catch((error) => {
-            console.error(error);
         });
 
     }
@@ -60,31 +56,24 @@ function EditProduct() {
     const getCategories = ()=>{
         axios.get('https://ecommerce-django-ct3k.onrender.com/category/list/')
             .then((response) => {
-                console.log(response.data);
                 setCategory(response.data);
             })
             .catch((error) => {
-                console.error(error);
             });
     }
 
     const getSubCategories = (catId)=>{
         axios.get(`https://ecommerce-django-ct3k.onrender.com/category/${catId}/`)
             .then((response) => {
-                console.log(response.data);
                 setCategoryId(response.data.name);
                 setSubcategory(response.data.subcategories);
-                console.log(response.data.subcategories);
-                console.log(subcategory);
             })
             .catch((error) => {
-                console.error(error);
             });
     }
     
     useEffect(() => {
         getCategories();
-        console.log(category);
 
         // getSubCategories();
     },[])

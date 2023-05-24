@@ -16,6 +16,8 @@ import {
   fetchItems,
   getWishNumItems,
 } from "../../Features/wishlist/wishlistSlice";
+
+import { fetchProfile, removeUser } from "../../Features/user/userSlice";
 //Components
 import Cart from "../Cart/Cart";
 // import Logout from "../Logout";
@@ -32,6 +34,7 @@ const is_admin = useSelector(selectIsAdmin);
       dispatch(setIsAdmin(false));
   }
     dispatch(logout());
+    dispatch(removeUser());
     navigate("/login");
   };
 
@@ -45,12 +48,14 @@ const is_admin = useSelector(selectIsAdmin);
   };
   const isAdmin = useSelector((state) => state.user.is_admin);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const profile = useSelector((state) => state.profile);
   const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(fetchCartItems());
       dispatch(fetchItems());
+      dispatch(fetchProfile());
     }
   }, []);
 
@@ -80,7 +85,7 @@ const is_admin = useSelector(selectIsAdmin);
           className="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between"
           id="templatemo_main_nav"
         >
-          {!isAdmin ? (
+          {!isAdmin && isLoggedIn && (
             <>
               <div className="flex-fill">
                 <ul className="nav navbar-nav d-flex justify-content-between mx-lg-auto">
@@ -90,7 +95,7 @@ const is_admin = useSelector(selectIsAdmin);
                     </NavLink>
                   </li>
                   <li className="nav-item">
-                    <NavLink className="nav-link" o="">
+                    <NavLink className="nav-link" to="/about">
                       About
                     </NavLink>
                   </li>
@@ -125,12 +130,11 @@ const is_admin = useSelector(selectIsAdmin);
                   className="nav-icon position-relative text-decoration-none"
                   to='/user'
                 >
-                  <i className="fa fa-fw fa-user text-dark mr-3"></i>
+                  {/* <i className="fa fa-fw fa-user text-dark mr-3"></i> */}
+                  <img  src={profile.profile.profileImgUrl} alt=""/>
                 </NavLink>
               </div>{" "}
             </>
-          ) : (
-            " "
           )}
 
           {isAdmin && (

@@ -13,7 +13,6 @@ function ProductDetails() {
     fetch(`https://ecommerce-django-ct3k.onrender.com/product/${productId}/`)
       .then((res) => res.json())
       .then((product) => {
-        console.log(product);
         setProduct(product);
       });
   }, []);

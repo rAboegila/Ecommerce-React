@@ -17,7 +17,6 @@ const popItem = (array, index) => {
 };
 
 const addItemReducer = (state, action) => {
-  console.log("product in dispatch >>> ", action.payload);
   state.cartItems.push(action.payload);
   state.price += Number(action.payload.price);
 };
@@ -29,15 +28,12 @@ const removeItemReducer = (state, action) => {
 };
 const incrementItemReducer = (state, action) => {
   const index = getIndex(state.cartItems, action.payload);
-  console.log(index);
 
   state.cartItems[index].quantity++;
   state.price += Number(state.cartItems[index].price);
 };
 const decrementItemReducer = (state, action) => {
-  console.log(action.payload);
   const index = getIndex(state.cartItems, action.payload);
-  console.log(index);
   state.cartItems[index].quantity--;
   state.price -= Number(state.cartItems[index].price);
 };
@@ -125,16 +121,13 @@ export const getPrice = (state) => state.cart.price;
 //   state.error = null;
 // })
 // .addCase(addProduct.fulfilled, (state, action) => {
-//   console.log("addToCart fulfilled:", action.payload);
 
 //   state.loading = false;
 //   state.items = [...state.cartItems, action.payload.data];
 //   state.price = state.price + action.payload.data.price;
 //   const product = action.payload.product;
-//   console.log(`Added ${product.name} to cart!`);
 // })
 // .addCase(addProduct.rejected, (state, action) => {
-//   console.log("addToCart rejected:", action.error);
 
 //   state.loading = false;
 //   state.error = action.error.message;

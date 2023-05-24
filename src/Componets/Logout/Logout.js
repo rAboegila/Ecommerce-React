@@ -17,7 +17,6 @@ useEffect(()=>{
     });
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
-    // console.log("response",is_admin);
     axiosInstance.defaults.headers['Authorization'] = null;
     navigate('/login');
 });

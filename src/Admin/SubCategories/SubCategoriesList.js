@@ -26,7 +26,6 @@ function SubCategoryList() {
     fetch("https://ecommerce-django-ct3k.onrender.com/subcategory/list/")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setSubCategory(data);
       });
   };

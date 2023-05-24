@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Formik, Form} from "formik";
 import {notification, Card } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import {CheckCircleTwoTone , InfoCircleFilled} from '@ant-design/icons'
 import api from "../../Lib/axios";
 import MyTextInput from'./MyTextInput'
 import * as Yup from "yup";
 import UpdateCredentials from './updateCredentials';
+import { useSelector,useDispatch } from 'react-redux';
+import { fetchProfile} from '../../Features/user/userSlice';
 
 export default function Details (){
-
+  const [submiting, setLoader] = useState(false);
+  const dispatch = useDispatch();
+  const profile = useSelector((state) => state.profile);
   const [antApi, contextHolder] = notification.useNotification();
   const successNotification =  (Msg) => {
     antApi.info({
@@ -40,24 +45,19 @@ export default function Details (){
       });
 
        function fetchData(){
-        api.get('/account/profile/')
-        .then((response)=>
-        {
-          setUser({
-            username:response.data.username,
-            firstName: response.data.first_name,
-            lastName: response.data.last_name,
-            dateOfBirth: response.data.date_of_birth,
-            email: response.data.email,
-            phone: response.data.phone
-        })
-        setIsLoading(false);
-        })
-        .catch((err)=>console.log(err));
-        
+        setUser({
+          firstName: profile.profile.first_name,
+          lastName: profile.profile.last_name,
+          username: profile.profile.username,
+          email: profile.profile.email,
+          phone: profile.profile.phone,
+          dateOfBirth: profile.profile.date_of_birth,
+          })
+          setIsLoading(false);
       }
       useEffect(()=>{
-        fetchData();
+        if(profile.loading === false) 
+          fetchData();
       },[])
       const validatePhoneNumber = (value, ctx) => {
         const phonePattern =
@@ -91,14 +91,20 @@ export default function Details (){
         email: Yup.string().email("Invalid email").required("Required"),
       });
     
-      const formSubmit = async (values, { setSubmitting }) => {
-        try{
-          await api.put('account/profile_update/',values);
+      const formSubmit = (values,{setSubmitting}) => {
+        setSubmitting(true);
+        setLoader(true)
+         api.put('account/profile_update/',values).then(() => {
           successNotification('Updated Successfully');
-        }
-        catch(err){
+          dispatch(fetchProfile());
+        })
+        .catch(()=>{
           errorNotification('Error updating profile');
-        }
+        })
+        .finally(()=>{
+          setLoader(false);
+          setSubmitting(false);
+        });
       };
 
       if (isLoading) {
@@ -161,7 +167,7 @@ export default function Details (){
               className="btn btn-success"
               disabled={isSubmitting}
             >
-              Update
+              {(submiting && <LoadingOutlined />) || (!submiting && "Update")}
             </button>
           </Form>
         )}

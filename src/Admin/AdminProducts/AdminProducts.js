@@ -22,7 +22,6 @@ function AdminProducts() {
     fetch("https://ecommerce-django-ct3k.onrender.com/product/list/")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setProducts(data);
       });
   };

@@ -19,7 +19,6 @@ export default function CategoryCard() {
     axios.get(`https://ecommerce-django-ct3k.onrender.com/category/${categoryId}/products/`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setProduct(data);
       });
   };
@@ -30,10 +29,9 @@ export default function CategoryCard() {
      axios
       .get("https://ecommerce-django-ct3k.onrender.com/category/list/")
       .then((res) => {
-        console.log(res.data);
         setCategories(res.data);
       })
-      .catch((err) => console.log("error\n", err));
+      .catch((err) => {})
   };
   
  useEffect(() => {

@@ -5,10 +5,13 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import MyTextInput from "./MyTextInput";
 import api from "../../Lib/api";
+import { LoadingOutlined } from "@ant-design/icons";
+
 
 export default function UpdateCredentials() {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [submiting, setSubmitting] = useState(false);
   const formRef = useRef();
 
   const [antApi, contextHolder] = notification.useNotification();
@@ -36,16 +39,16 @@ export default function UpdateCredentials() {
 
   const handleOk = async () => {
     setConfirmLoading(true);
+    setSubmitting(true);
     const data = formRef.current.values;
-    try{
-        const response = await api.post("account/change_password/", data);
-        console.log(response);
-        successNotification("Passowrd Updated Successfully");
+    api.post("account/change_password/", data).then(()=>{
+      setSubmitting(false);  
+      successNotification("Passowrd Updated Successfully");
         setOpen(false);
-    }
-    catch(err){
-        errorNotification("Error While Updating Password")
-    }
+    })
+    .catch(()=>{
+        errorNotification("Old Password is incorrect")
+    })
 
   };
 
@@ -88,7 +91,7 @@ export default function UpdateCredentials() {
         onCancel={handleCancel}
         footer={[
           <Button key="submit" danger onClick={handleOk}>
-            Change
+            {(submiting && <LoadingOutlined />) || (!submiting && "Change")}
           </Button>,
           <Button key="back" onClick={handleCancel}>
             Cancel

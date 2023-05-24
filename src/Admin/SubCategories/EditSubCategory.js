@@ -15,7 +15,6 @@ let {subcategoryId} = useParams();
         e.preventDefault();
 
         const token = localStorage.getItem("token_admin");
-        console.log(parentcategory);
 
         fetch(`https://ecommerce-django-ct3k.onrender.com/subcategory/update/${subcategoryId}/`, {
             method: "PUT",
@@ -42,18 +41,15 @@ let {subcategoryId} = useParams();
     const getCategories = () => {
         axios.get('https://ecommerce-django-ct3k.onrender.com/category/list/')
             .then((response) => {
-                console.log(response.data);
                 setCategory(response.data);
             })
             .catch((error) => {
-                console.error(error);
             });
     }
 
 
     useEffect(() => {
         getCategories();
-        console.log(category);
 
         // getSubCategories();
     }, [])

@@ -29,50 +29,37 @@ export default function CartList() {
 
   useEffect(() => {
     const data = dispatch(fetchCartItems());
-    console.log(cartItems);
   }, []);
 
   const removeFromCart = (item) => {
-    console.log("atempt to remove from cart>>", item);
 
     api
       .delete(`/cart/item/remove/${item.id}/`)
       .then((res) => {
-        console.log("add to cart succesfull!\nres >>> ", res);
         const respo = dispatch(removeItem(item));
-        console.log(respo);
       })
       .catch((err) => {
-        console.log("add to cart failed!\n err >>> ", err);
       });
   };
   const incrementQuantity = (item, index) => {
-    console.log("atempt to inc from cart>>", item);
     const body = { quantity: item.quantity + 1 };
     api
       .put(`/cart/item/update/${item.id}/`, body)
       .then((res) => {
-        console.log("inc item  succesfull!\nres >>> ", res);
         const respo = dispatch(incrementItem(item));
-        console.log(respo);
       })
       .catch((err) => {
-        console.log("inc item failed!\n err >>> ", err);
         /////Add Alert message and disable add button
       });
   };
   const decrementQuantity = (item, index) => {
-    console.log("atempt to dec item from cart>>", item);
     const body = { quantity: item.quantity - 1 };
     api
       .put(`/cart/item/update/${item.id}/`, body)
       .then((res) => {
-        console.log("dec item succesfull!\nres >>> ", res);
         const respo = dispatch(decrementItem(item));
-        console.log(respo);
       })
       .catch((err) => {
-        console.log("dec item failed!\n err >>> ", err);
       });
   };
   return (

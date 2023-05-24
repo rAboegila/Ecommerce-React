@@ -10,7 +10,6 @@ export default function Cart() {
   const navigate = useNavigate();  
   const openDrawer = useSelector(isOpen);
   const onClose = () => {
-    console.log("closing?", openDrawer);
     dispatch(closeCart());
   };
 

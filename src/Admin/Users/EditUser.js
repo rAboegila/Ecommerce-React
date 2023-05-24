@@ -34,7 +34,6 @@ function EditUserStatus() {
             navigate('/users');
             setStatus(res.is_active)
         })
-        console.log(status);
 
      }
 

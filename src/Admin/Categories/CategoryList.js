@@ -26,7 +26,6 @@ function CategoryList() {
     fetch("https://ecommerce-django-ct3k.onrender.com/category/list/")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setCategory(data);
       });
   };
