@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../Features/auth/authSlice";
-import { setIsAdmin , selectIsAdmin} from "../../Lib/IsAdmin";
+import { setIsAdmin, selectIsAdmin } from "../../Lib/IsAdmin";
 
 //Redux
 import {
@@ -17,7 +17,11 @@ import {
   getWishNumItems,
 } from "../../Features/wishlist/wishlistSlice";
 
-import { fetchProfile, removeUser } from "../../Features/user/userSlice";
+import {
+  fetchProfile,
+  removeUser,
+  getProfile,
+} from "../../Features/user/userSlice";
 //Components
 import Cart from "../Cart/Cart";
 // import Logout from "../Logout";
@@ -25,14 +29,14 @@ import Cart from "../Cart/Cart";
 import "./Navbar.css";
 
 export default function Navbar() {
-const is_admin = useSelector(selectIsAdmin);
+  const is_admin = useSelector(selectIsAdmin);
 
   const onLogOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("token_admin");
-    if(is_admin === true){
+    if (is_admin === true) {
       dispatch(setIsAdmin(false));
-  }
+    }
     dispatch(logout());
     dispatch(removeUser());
     navigate("/login");
@@ -48,7 +52,8 @@ const is_admin = useSelector(selectIsAdmin);
   };
   const isAdmin = useSelector((state) => state.user.is_admin);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const profile = useSelector((state) => state.profile);
+  console.log("isLoggedIN", isLoggedIn);
+  const profile = useSelector(getProfile);
   const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
@@ -58,6 +63,11 @@ const is_admin = useSelector(selectIsAdmin);
       dispatch(fetchProfile());
     }
   }, []);
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(fetchProfile());
+    }
+  }, [isLoggedIn]);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light shadow">
@@ -128,10 +138,10 @@ const is_admin = useSelector(selectIsAdmin);
 
                 <NavLink
                   className="nav-icon position-relative text-decoration-none"
-                  to='/user'
+                  to="/user"
                 >
                   {/* <i className="fa fa-fw fa-user text-dark mr-3"></i> */}
-                  <img  src={profile.profile.profileImgUrl} alt=""/>
+                  <img src={profile.profileImgUrl} alt="" />
                 </NavLink>
               </div>{" "}
             </>

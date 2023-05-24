@@ -37,9 +37,10 @@ export default function Orders() {
   };
 
   const handleOk = async () => {
+    console.log("order ID", orders[currentOrder - 1].id);
     setSubmitting(true);
     setConfirmLoading(true);
-    cancelOrder(currentOrder);
+    cancelOrder(orders[currentOrder - 1].id);
   };
 
   const handleCancel = () => {
@@ -59,6 +60,7 @@ export default function Orders() {
   }
 
   function cancelOrder(id) {
+    console.log("cancel order", id);
     api
       .delete(`/order/delete/${id}/`)
       .then(() => {
@@ -205,7 +207,7 @@ export default function Orders() {
             footer={[
               <Button key="submit" danger onClick={handleOk}>
                 {(submiting && <LoadingOutlined />) || (!submiting && "Cancel")}
-              </Button>
+              </Button>,
             ]}
           ></Modal>
         </>

@@ -41,18 +41,15 @@ const removeUserReducer = (state) => {
   state.token = "";
 };
 
-export const fetchProfile = createAsyncThunk(
-  "user/fetchProfile",
-  () => {
-    const token=localStorage.getItem("token");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    return api.get("/account/profile/", config).then((response)=>response.data);
-  }
-);
+export const fetchProfile = createAsyncThunk("user/fetchProfile", () => {
+  const token = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  return api.get("/account/profile/", config).then((response) => response.data);
+});
 
 const userSlice = createSlice({
   name: "user",
@@ -60,7 +57,7 @@ const userSlice = createSlice({
   reducers: {
     removeUser: removeUserReducer,
     addToken: addUserToken,
-    setProfile:setProfileReducer,
+    setProfile: setProfileReducer,
   },
   extraReducers: (builder) => {
     builder
@@ -70,7 +67,13 @@ const userSlice = createSlice({
       })
       .addCase(fetchProfile.fulfilled, (state, action) => {
         state.loading = false;
-        setProfileReducer(state, action);
+        state.profile.first_name = action.payload.first_name;
+        state.profile.last_name = action.payload.last_name;
+        state.profile.username = action.payload.username;
+        state.profile.email = action.payload.email;
+        state.profile.date_of_birth = action.payload.date_of_birth;
+        state.profile.phone = action.payload.phone;
+        state.profile.profileImgUrl = action.payload.profileImgUrl;
       })
       .addCase(fetchProfile.rejected, (state, action) => {
         state.loading = false;
@@ -80,7 +83,8 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { removeUser, addToken ,setProfile} = userSlice.actions;
+export const { removeUser, addToken, setProfile } = userSlice.actions;
 export const getLoading = (state) => state.user.loading;
+export const getProfile = (state) => state.profile.profile;
 export const getError = (state) => state.user.error;
 export const getToken = (state) => state.user.token;
