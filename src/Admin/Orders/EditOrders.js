@@ -34,7 +34,6 @@ function EditOrders() {
             navigate('/orders');
             setStatus(res)
         })
-        console.log(status);
         
      }
 

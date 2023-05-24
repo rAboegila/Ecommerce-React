@@ -49,7 +49,6 @@ export default function ProductCard({ product, isLoading }) {
   const handleOk = () => {
     if (!disable) {
       setConfirmModalLoading(true);
-      console.log("debugging for undefind", choosenSize);
       api
         .get(
           `/product/${product.id}/inventory/${reverseFormattedColor(
@@ -90,7 +89,6 @@ export default function ProductCard({ product, isLoading }) {
     }
   };
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     setChoosenColor("");
     setChoosenSize("");
     setModalOpen(false);
@@ -101,7 +99,6 @@ export default function ProductCard({ product, isLoading }) {
     setConfirmModalLoading(false);
   };
   const addToCart = () => {
-    console.log("atempt to add to cart>>", product);
     const itemData = {
       color: reverseFormattedColor(choosenColor),
       size: reverseFormattedSize(choosenSize),
@@ -110,7 +107,6 @@ export default function ProductCard({ product, isLoading }) {
     api
       .post(`/cart/item/create/${product.id}/`, itemData)
       .then((res) => {
-        console.log(res);
         dispatch(addItem(res.data.data));
         setModalOpen(false);
         // setInStock(true);
@@ -118,23 +114,19 @@ export default function ProductCard({ product, isLoading }) {
         setErrMsg("All Good!");
       })
       .catch((err) => {
-        console.log("add to cart failed!\n err >>> ", err);
         setError(true);
         setErrMsg(err.response.data.error);
       });
   };
   const addToWishList = () => {
-    console.log("atempt to add to wishlist>>", product);
 
     api
       .post(`/wishlist/add_product/${product.id}/`)
       .then((res) => {
-        console.log(res);
         dispatch(addWishItem(product));
         successMsg("Added to your wishlist succesfully");
       })
       .catch((err) => {
-        console.log("add to wishlist failed!\n err >>> ", err);
         errorMsg(err.response.data.error);
       });
   };
@@ -162,16 +154,13 @@ export default function ProductCard({ product, isLoading }) {
   }, []);
 
   const onColorChange = ({ target: { value } }) => {
-    console.log("Change Color");
     // setInStock(true);
     setError(false);
-    console.log("color choosen", value);
     setChoosenColor(value);
   };
   const onSizeChange = ({ target: { value } }) => {
     // setInStock(true);
     setError(false);
-    console.log("size choosen", value);
     setChoosenSize(value);
   };
   return (

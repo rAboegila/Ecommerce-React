@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../Features/auth/authSlice";
+import { setIsAdmin, selectIsAdmin } from "../../Lib/IsAdmin";
 
 //Redux
 import {
@@ -15,6 +16,12 @@ import {
   fetchItems,
   getWishNumItems,
 } from "../../Features/wishlist/wishlistSlice";
+
+import {
+  fetchProfile,
+  removeUser,
+  getProfile,
+} from "../../Features/user/userSlice";
 //Components
 import Cart from "../Cart/Cart";
 // import Logout from "../Logout";
@@ -22,10 +29,16 @@ import Cart from "../Cart/Cart";
 import "./Navbar.css";
 
 export default function Navbar() {
+  const is_admin = useSelector(selectIsAdmin);
+
   const onLogOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("token_admin");
+    if (is_admin === true) {
+      dispatch(setIsAdmin(false));
+    }
     dispatch(logout());
+    dispatch(removeUser());
     navigate("/login");
   };
 
@@ -39,14 +52,22 @@ export default function Navbar() {
   };
   const isAdmin = useSelector((state) => state.user.is_admin);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  console.log("isLoggedIN", isLoggedIn);
+  const profile = useSelector(getProfile);
   const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(fetchCartItems());
       dispatch(fetchItems());
+      dispatch(fetchProfile());
     }
   }, []);
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(fetchProfile());
+    }
+  }, [isLoggedIn]);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light shadow">
@@ -74,7 +95,7 @@ export default function Navbar() {
           className="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between"
           id="templatemo_main_nav"
         >
-          {!isAdmin ? (
+          {!isAdmin && isLoggedIn && (
             <>
               <div className="flex-fill">
                 <ul className="nav navbar-nav d-flex justify-content-between mx-lg-auto">
@@ -84,7 +105,7 @@ export default function Navbar() {
                     </NavLink>
                   </li>
                   <li className="nav-item">
-                    <NavLink className="nav-link" o="">
+                    <NavLink className="nav-link" to="/about">
                       About
                     </NavLink>
                   </li>
@@ -117,14 +138,13 @@ export default function Navbar() {
 
                 <NavLink
                   className="nav-icon position-relative text-decoration-none"
-                  to='/user'
+                  to="/user"
                 >
-                  <i className="fa fa-fw fa-user text-dark mr-3"></i>
+                  {/* <i className="fa fa-fw fa-user text-dark mr-3"></i> */}
+                  <img src={profile.profileImgUrl} alt="" />
                 </NavLink>
               </div>{" "}
             </>
-          ) : (
-            " "
           )}
 
           {isAdmin && (

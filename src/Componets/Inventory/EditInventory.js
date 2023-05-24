@@ -48,11 +48,9 @@ function EditInventory() {
     const getAllProducts = () => {
         axios.get('https://ecommerce-django-ct3k.onrender.com/product/list/')
             .then((response) => {
-                console.log(response.data);
                 setProduct(response.data);
             })
             .catch((error) => {
-                console.error(error);
             });
     }
 
@@ -60,7 +58,6 @@ function EditInventory() {
       await  fetch(`https://ecommerce-django-ct3k.onrender.com/product/${productId}/inventory/${inventoryId}/`)
     .then((res)=> res.json())
     .then((res)=>{
-        console.log(res);
         setInventory(res)
         setColor(res.color);
         setSize(res.size);

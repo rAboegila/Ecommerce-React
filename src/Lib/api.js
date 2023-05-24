@@ -2,7 +2,6 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "https://ecommerce-django-ct3k.onrender.com",
-
 });
 
 api.interceptors.request.use((config) => {

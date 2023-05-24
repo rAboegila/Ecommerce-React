@@ -32,7 +32,6 @@ function OrdersList() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         serOrder(data);
       });
   };

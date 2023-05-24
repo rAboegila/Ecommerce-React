@@ -1,27 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 
-// const initialStateAdmin = {
-//   is_admin: localStorage.getItem("token") ? true : false,
-// };
-
-// export const userSlice = createSlice({
-//   name: 'user',
-//   // initialState: {
-//   //   is_admin: false,
-//   // },
-//   initialStateAdmin,
-//   reducers: {
-//     setIsAdmin: (state, action) => {
-//         console.log(action.payload);
-//       state.is_admin = action.payload;
-//       console.log(state);
-//       console.log(state.is_admin);
-
-//     },
-//   },
-// });
-
 const initialState = {
   is_admin: localStorage.getItem("token_admin") ? true : false,
 };
@@ -31,7 +10,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setIsAdmin: (state, action) => {
-      state.is_admin = true;
+      state.is_admin = action.payload;
     },
   },
 });

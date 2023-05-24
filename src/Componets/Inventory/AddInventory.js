@@ -44,7 +44,6 @@ function AddInventory() {
     const getAllProducts = () => {
         axios.get('https://ecommerce-django-ct3k.onrender.com/product/list/')
             .then((response) => {
-                console.log(response.data);
                 setProduct(response.data);
             })
             .catch((error) => {

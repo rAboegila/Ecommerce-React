@@ -15,7 +15,6 @@ useEffect(()=>{
     fetch(`https://ecommerce-django-ct3k.onrender.com/subcategory/${subcategoryId}/`)
     .then((res)=> res.json())
     .then((subcategory)=>{
-        console.log(subcategory);
         setSubCategory(subcategory)
     })
 },[])

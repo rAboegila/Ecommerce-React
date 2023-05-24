@@ -10,7 +10,6 @@ import api from "../../Lib/axios";
 
 
 function UsersList() {
-  // const isAdmin = useSelector(selectIsAdmin);
   const navigate = useNavigate();
   const token = localStorage.getItem("token_admin");
 
@@ -31,7 +30,6 @@ function UsersList() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setName(data);
       });
   };
@@ -43,7 +41,6 @@ function UsersList() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setActive(data);
       });
   };

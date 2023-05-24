@@ -28,7 +28,6 @@ function Inventory() {
     fetch("https://ecommerce-django-ct3k.onrender.com/product/inventory/list/")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setInventories(data);
       });
   };

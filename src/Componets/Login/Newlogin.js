@@ -3,18 +3,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import api from "../../Lib/axios";
 import { login } from "../../Features/auth/authSlice";
+import {setProfile} from "../../Features/user/userSlice";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { setIsAdmin } from "../../Lib/IsAdmin";
 import axios from "axios";
 import { notification } from "antd";
+import {LoadingOutlined } from "@ant-design/icons"
+import {CheckCircleTwoTone , InfoCircleFilled} from '@ant-design/icons'
+
 
 function Login() {
   const [antApi, contextHolder] = notification.useNotification();
-  const openNotification = (Msg) => {
+  const errorNotification =  (Msg) => {
     antApi.info({
       message: Msg,
-      placement: "top",
+      placement:'top',
+      style:{color:'#ec6060'},
+      icon:(<InfoCircleFilled/>)
     });
   };
 
@@ -23,6 +29,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const [submiting,setSubmitting]=useState(false);
   const { isLoading, isAuthenticated, user, error } = useSelector(
     (state) => state.auth || {}
   );
@@ -32,6 +39,7 @@ function Login() {
   });
 
   const handleLogin = async (event) => {
+    setSubmitting(true);
     event.preventDefault();
     try {
       const response = await axios.post(
@@ -42,31 +50,25 @@ function Login() {
         }
       );
 
-      console.log("login response", response);
-
-      if (!response.data.token) {
-        console.log(response);
-      }
-
       if (response.data.is_admin) {
         localStorage.setItem("token_admin", response.data.token);
         dispatch(setIsAdmin(response.data.is_admin));
         navigate("/admin");
       } else {
         localStorage.setItem("token", response.data.token);
-        console.log(response.data.token);
-        console.log(response.data);
-        console.log("Login Successfully");
-        dispatch(login()); // Dispatch the login action
-        // dispatch(addToken(response.data.token));
-        // dispatch(fetchProfile());
+        api.get('/account/profile/')
+        .then((response)=>
+        {
+          dispatch(setProfile(response.data));
+        })
+        .catch((err)=>{});
+        dispatch(login());
         navigate("/");
       }
-      console.log(response.data.is_admin);
     } catch (error) {
-      console.error(error);
-      openNotification("Email or password is invalid");
+      errorNotification("Email or password is invalid");
     }
+    setSubmitting(false);
   };
 
   return (
@@ -99,7 +101,9 @@ function Login() {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Log in
+          {
+          (submiting && <LoadingOutlined />) || (!submiting && "Log In")
+          }
         </Button>
       </Form>
     </div>

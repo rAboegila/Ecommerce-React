@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Spin, Card, Row, Col, Breadcrumb, Layout, Menu, Button } from "antd";
+import { Spin, Card, Row, Col, Layout, Menu, Button } from "antd";
 import { SmileTwoTone } from "@ant-design/icons";
 
 import api from "../../Lib/axios";
@@ -26,15 +26,14 @@ export default function Products() {
       label: (
         <Link
           onClick={() => {
-            api.get(`/category/${id}/products/`).then((res) => {
-              console.log(res.data);
-              setFilteredProducts(res.data);
-            });
-            if (filteredProducts.length == 0) {
-              setEmptyState(true);
-            } else if (filteredProducts.length >= 0) setEmptyState(false);
+            console.log("cat " + name + " clicked");
 
-            console.log(filteredProducts.length, "-", emptyState);
+            api.get(`/category/${id}/products/`).then((res) => {
+              setFilteredProducts(
+                res.data.filter((p) => p.inventory.length > 0)
+              );
+            });
+
           }}
           style={{
             textDecoration: "none",
@@ -55,14 +54,11 @@ export default function Products() {
       label: (
         <Link
           onClick={() => {
+            console.log("sub " + label + " clicked");
             api.get(`/subcategory/${id}/products/`).then((res) => {
-              console.log(res.data);
-              setFilteredProducts(res.data);
-              if (filteredProducts.length == 0) {
-                setEmptyState(true);
-              } else if (filteredProducts.length >= 0) setEmptyState(false);
-
-              console.log(filteredProducts.length, "-", emptyState);
+              setFilteredProducts(
+                res.data.filter((p) => p.inventory.length > 0)
+              );
             });
           }}
           style={{
@@ -101,15 +97,13 @@ export default function Products() {
         );
       })
       .catch((err) => console.error(err))
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => {});
 
     api
       .get("product/list/")
       .then((res) => {
-        setProducts(res.data);
-        setFilteredProducts(res.data);
+        setFilteredProducts(res.data.filter((p) => p.inventory.length > 0));
+        setProducts(res.data.filter((p) => p.inventory.length > 0));
       })
       .catch((err) => console.error(err))
       .finally(() => {
@@ -117,6 +111,16 @@ export default function Products() {
       });
   }, []);
 
+  useEffect(() => {
+    if (filteredProducts.length === 0) {
+      // console.log(" if ", filteredProducts.length === 0);
+
+      setEmptyState(true);
+    } else if (filteredProducts.length > 0) {
+      // console.log("else if ", filteredProducts.length >= 0);
+      setEmptyState(false);
+    }
+  }, [filteredProducts]);
   const displayProducts = () => {
     return filteredProducts.map((product, i) => {
       return (

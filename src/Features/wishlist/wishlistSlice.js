@@ -15,7 +15,6 @@ const popItem = (array, index) => {
 };
 
 const addItemReducer = (state, action) => {
-  console.log("product in dispatch >>> ", action.payload);
   state.items.push(action.payload);
 };
 

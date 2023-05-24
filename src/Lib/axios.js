@@ -1,11 +1,7 @@
 import axios from "axios";
 
-// const baseURL = "http://127.0.0.1:8000";
 const baseURL = "https://ecommerce-django-ct3k.onrender.com";
 
-localStorage.getItem("token")
-  ? console.log("Bearer " + localStorage.getItem("token"))
-  : console.log("null");
 const api = axios.create({
   baseURL: baseURL,
   // timeout: 5000,
