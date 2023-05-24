@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import "./Home.css";
 import { useEffect } from "react";
@@ -135,21 +136,21 @@ export default function Home() {
               return (
                 <div className="col-12 col-md-4 mb-4">
                   <div className="card h-100">
-                    <a>
+                    <Link>
                       <img
                         style={{ height: 471 }}
                         src={prod.imageUrl}
                         className="card-img-top"
                         alt="..."
                       />
-                    </a>
+                    </Link>
                     <div className="card-body">
                       <ul className="list-unstyled d-flex justify-content-between">
                         <li className="text-muted text-right">${prod.price}</li>
                       </ul>
-                      <a className="h2 text-decoration-none text-dark">
+                      <Link className="h2 text-decoration-none text-dark">
                         {prod.name}
-                      </a>
+                      </Link>
                       <p className="card-text">{prod.description}</p>
                     </div>
                   </div>

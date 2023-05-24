@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect} from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -54,7 +55,6 @@ export default function Navbar() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   console.log("isLoggedIN", isLoggedIn);
   const profile = useSelector(getProfile);
-  const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn) {

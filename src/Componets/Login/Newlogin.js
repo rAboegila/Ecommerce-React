@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { useNavigate } from "react-router";
 import api from "../../Lib/axios";
 import { login } from "../../Features/auth/authSlice";
@@ -10,7 +10,7 @@ import { setIsAdmin } from "../../Lib/IsAdmin";
 import axios from "axios";
 import { notification } from "antd";
 import {LoadingOutlined } from "@ant-design/icons"
-import {CheckCircleTwoTone , InfoCircleFilled} from '@ant-design/icons'
+import { InfoCircleFilled} from '@ant-design/icons'
 
 
 function Login() {
@@ -30,13 +30,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const [submiting,setSubmitting]=useState(false);
-  const { isLoading, isAuthenticated, user, error } = useSelector(
-    (state) => state.auth || {}
-  );
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+
 
   const handleLogin = async (event) => {
     setSubmitting(true);
