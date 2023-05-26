@@ -54,11 +54,11 @@ function Login() {
         api
           .get("/account/profile/")
           .then((response) => {
+            dispatch(login());
             dispatch(setProfile(response.data));
+            navigate("/");
           })
           .catch((err) => {});
-        dispatch(login());
-        navigate("/");
       }
     } catch (error) {
       errorNotification("Email or password is invalid");
